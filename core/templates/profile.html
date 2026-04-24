@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StyleMate AI - Profile</title>
+
+    {% load static %}  <!-- ✅ VERY IMPORTANT -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <h2>✨ StyleMate AI</h2>
+  <ul>
+    <li>Home</li>
+    <li class="active">Profile</li>
+    <li>Wardrobe</li>
+    <li>Styling</li>
+    <li>Try-On</li>
+    <li>Feedback</li>
+    <li>Professions</li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<div class="container">
+
+  <h1>Your Style Profile</h1>
+  <p class="subtitle">Tell us about yourself to unlock personalized AI styling.</p>
+
+  <div class="grid">
+
+    <!-- LEFT CARD -->
+    <div class="card profile-card">
+      <div class="avatar"></div>
+      <h3 id="username">User</h3>
+      <p id="location">📍 Loading...</p>
+      <button>Edit Profile</button>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="card form-card">
+
+      <div class="form-grid">
+        <div>
+          <label>Skin Tone</label>
+          <input id="skin_tone">
+        </div>
+
+        <div>
+          <label>Skin Type</label>
+          <input id="skin_type">
+        </div>
+
+        <div>
+          <label>Body Type</label>
+          <select id="body_type">
+            <option>Rectangle</option>
+            <option>Triangle</option>
+            <option>Oval</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Gender</label>
+          <select id="gender">
+            <option>Prefer Not To Say</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label>Location</label>
+        <input id="user_location">
+      </div>
+
+      <button onclick="saveProfile()">Save</button>
+
+      <div class="success" id="statusMsg"></div>
+    </div>
+
+  </div>
+
+  <!-- WEATHER -->
+  <div class="card weather">
+    <h3>Local Weather</h3>
+    <h2 id="temp">--°C</h2>
+    <p id="weather">Loading...</p>
+  </div>
+
+</div>
+
+<!-- JS -->
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

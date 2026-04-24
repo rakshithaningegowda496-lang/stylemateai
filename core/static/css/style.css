@@ -1,0 +1,98 @@
+body {
+  font-family: 'Segoe UI';
+  margin: 0;
+  background: #f5f7ff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.navbar ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.navbar li {
+  cursor: pointer;
+  color: gray;
+}
+
+.navbar .active {
+  color: black;
+  font-weight: bold;
+}
+
+.container {
+  padding: 40px;
+  text-align: center;
+}
+
+.subtitle {
+  color: gray;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  background: #ddd;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.profile-card button {
+  margin-top: 10px;
+  padding: 8px 15px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.success {
+  margin-top: 10px;
+  color: green;
+}
+
+.weather {
+  margin-top: 30px;
+  text-align: left;
+}
