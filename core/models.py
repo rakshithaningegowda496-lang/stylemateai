@@ -7,3 +7,9 @@ class Profile(models.Model):
     body_type = models.CharField(max_length=50)
     gender = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
+
+
+class Outfit(models.Model):
+    occasion = models.CharField(max_length=50)
+    mood = models.CharField(max_length=50)
+    recommendation = models.TextField()

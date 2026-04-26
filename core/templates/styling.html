@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StyleMate AI - Smart Wardrobe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+   <link rel="stylesheet" href="{% static 'css/styling.css' %}" />
+</head>
+<body>
+ 
+<!-- NAV -->
+<nav>
+  <a href="home.html" class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    </svg>
+    StyleMate AI
+  </a>
+ 
+  <ul class="nav-links">
+    <li>Home</li>
+    <li><a href="profile.html"     data-page="profile">Profile</a></li>
+    <li class="active">Styling</li>
+    <li>Wardrobe</li>
+    <li>Try-On</li>
+    <li>Feedback</li>
+    
+  </ul>
+ 
+  <div class="nav-right">
+    <button class="theme-btn" title="Toggle theme">🌙</button>
+  </div>
+</nav>
+ 
+<!-- HERO -->
+<section class="hero">
+  <h1>AI Personalized Styling</h1>
+  <p>Let our AI curate the perfect look from your closet.</p>
+</section>
+ 
+<!-- MAIN -->
+<div class="main-layout">
+ 
+  <!-- FORM CARD -->
+  <div class="form-card">
+ 
+    <!-- Occasion -->
+    <div>
+      <div class="field-label">Occasion</div>
+      <select class="styled-select" id="occasion">
+        <option value="casual">Casual</option>
+        <option value="formal">Formal</option>
+        <option value="party">Party</option>
+        <option value="office">Office</option>
+        <option value="date">Date Night</option>
+      </select>
+    </div>
+ 
+    <!-- Profession -->
+    <div>
+      <div class="field-label">Profession</div>
+      <div class="pill-group" id="profession-group">
+        <button class="pill" data-val="Student">Student</button>
+        <button class="pill" data-val="Professor">Professor</button>
+        <button class="pill active" data-val="IT Employee">IT Employee</button>
+        <button class="pill" data-val="Model">Model</button>
+      </div>
+    </div>
+ 
+    <!-- Mood -->
+    <div>
+      <div class="field-label">Mood</div>
+      <select class="styled-select" id="mood">
+        <option value="relaxed">Relaxed</option>
+        <option value="confident">Confident</option>
+        <option value="energetic">Energetic</option>
+        <option value="elegant">Elegant</option>
+        <option value="playful">Playful</option>
+      </select>
+    </div>
+ 
+    <!-- Color Preference -->
+    <div>
+      <div class="field-label">Color Preference</div>
+      <div class="color-pref-group">
+        <div class="color-pref-card active" id="ai-recommended">
+          <div class="card-title">AI Recommended</div>
+          <div class="card-sub">Based on Medium skin</div>
+        </div>
+        <div class="color-pref-card" id="custom-color">
+          <div class="card-title">Custom</div>
+          <div class="card-sub">Your preference</div>
+        </div>
+      </div>
+      <div class="suggest-label">Suggested for your Medium Tone:</div>
+      <div class="color-tags">
+        <span class="color-tag">Earth Tones</span>
+        <span class="color-tag">Olive</span>
+        <span class="color-tag">Gold</span>
+        <span class="color-tag">Mustard</span>
+        <span class="color-tag">Navy</span>
+      </div>
+    </div>
+ 
+    <!-- Weather Context -->
+    <div>
+      <div class="weather-box">
+        <div>
+          <div class="weather-label">Weather Context</div>
+          <div class="weather-val">28°C <span>Cloudy</span></div>
+        </div>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5">
+          <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+        </svg>
+      </div>
+    </div>
+ 
+    <!-- Generate Button -->
+    <button class="generate-btn" id="gen-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+      Generate Outfits
+    </button>
+ 
+  </div>
+ 
+  <!-- PREVIEW PANEL -->
+  <div class="preview-panel" id="preview-panel">
+    <div class="preview-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h2>Ready to Style?</h2>
+    <p>Select your occasion and mood to see personalized outfit combinations.</p>
+ 
+    <div class="spinner" id="spinner"></div>
+ 
+    <div class="outfit-grid" id="outfit-grid">
+      <div class="outfit-card">
+        <div class="outfit-img">👔</div>
+        <div class="outfit-info">
+          <div class="outfit-name">Smart Casual</div>
+          <div class="outfit-desc">Earth tones · Relaxed fit</div>
+        </div>
+      </div>
+      <div class="outfit-card">
+        <div class="outfit-img">🧥</div>
+        <div class="outfit-info">
+          <div class="outfit-name">Office Ready</div>
+          <div class="outfit-desc">Navy · Professional look</div>
+        </div>
+      </div>
+      <div class="outfit-card">
+        <div class="outfit-img">👕</div>
+        <div class="outfit-info">
+          <div class="outfit-name">Weekend Vibe</div>
+          <div class="outfit-desc">Olive & Mustard · Comfort first</div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+ 
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    </svg>
+    StyleMate AI
+  </div>
+  <div class="footer-tagline">Your Personal AI Stylist – Dress Smart, Look Confident.</div>
+  <div class="footer-copy">© 2026 StyleMate AI. All rights reserved.</div>
+</footer>
+ 
+<script src="script.js"></script>
+</body>
+</html>
