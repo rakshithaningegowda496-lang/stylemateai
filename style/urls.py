@@ -22,9 +22,14 @@ from django.shortcuts import render
 def profile_page(request):
     return render(request, "profile.html")
 
+def styling_page(request):
+    return render(request, "styling.html")
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', profile_page),          
-    path('', include('core.urls')),  
+    path('', profile_page, name='profile'),   # ✅ add name
+    path('styling/', styling_page, name='styling'),  # ✅ ADD THIS LINE
+
+    path('', include('core.urls')),
 ]

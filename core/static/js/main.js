@@ -35,3 +35,58 @@ async function saveProfile() {
 }
 
 loadProfile();
+// ── ACTIVE NAV LINK (auto-detects current page) ──
+(function () {
+  const currentFile = window.location.pathname.split('/').pop() || 'home.html';
+  document.querySelectorAll('.nav-links a[data-page]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href === currentFile) {
+      link.classList.add('active');
+    }
+  });
+})();
+ 
+// ── PILL TOGGLE ──
+document.querySelectorAll('.pill-group').forEach(group => {
+  group.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      group.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+});
+ 
+// ── COLOR PREFERENCE TOGGLE ──
+const aiCard = document.getElementById('ai-recommended');
+const customCard = document.getElementById('custom-color');
+ 
+if (aiCard && customCard) {
+  [aiCard, customCard].forEach(card => {
+    card.addEventListener('click', () => {
+      aiCard.classList.remove('active');
+      customCard.classList.remove('active');
+      card.classList.add('active');
+    });
+  });
+}
+ 
+// ── GENERATE OUTFITS ──
+const genBtn      = document.getElementById('gen-btn');
+const spinner     = document.getElementById('spinner');
+const outfitGrid  = document.getElementById('outfit-grid');
+const previewPanel = document.getElementById('preview-panel');
+ 
+if (genBtn) {
+  genBtn.addEventListener('click', () => {
+    previewPanel.querySelector('h2').style.display           = 'none';
+    previewPanel.querySelector('p').style.display            = 'none';
+    previewPanel.querySelector('.preview-icon').style.display = 'none';
+    outfitGrid.style.display = 'none';
+    spinner.style.display    = 'block';
+ 
+    setTimeout(() => {
+      spinner.style.display   = 'none';
+      outfitGrid.style.display = 'grid';
+    }, 1800);
+  });
+}
