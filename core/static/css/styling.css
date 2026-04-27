@@ -444,3 +444,145 @@ footer {
   font-size: 0.78rem;
   color: #bbb;
 }
+/* ── Profession pills ─────────────────────────────── */
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pill {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border, #ddd);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  color: inherit;
+}
+
+.pill:hover {
+  border-color: #8b6cef;
+  color: #8b6cef;
+}
+
+.pill.active {
+  background: #8b6cef;
+  border-color: #8b6cef;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pill-hint {
+  font-size: 0.78rem;
+  color: #999;
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+/* ── Color tags ───────────────────────────────────── */
+.color-tag {
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.color-tag.selected {
+  background: #8b6cef;
+  color: #fff;
+  border-color: #8b6cef;
+}
+
+/* ── Outfit pieces list ───────────────────────────── */
+.outfit-pieces {
+  margin: 0.4rem 0 0.3rem 1rem;
+  padding: 0;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.outfit-colors {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #8b6cef;
+  display: inline-block;
+}
+
+/* ── Loading pill ─────────────────────────────────── */
+.loading-pill {
+  opacity: 0.5;
+  font-style: italic;
+}
+/* ── Color tag buttons ───────────────────────────── */
+.color-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.color-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1.5px solid #ddd;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  color: inherit;
+}
+
+.color-tag:hover {
+  border-color: #8b6cef;
+}
+
+.color-tag.selected {
+  border-color: #8b6cef;
+  background: #f3eeff;
+  color: #8b6cef;
+  font-weight: 600;
+}
+
+.color-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.color-select-hint {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 0.4rem;
+}
+
+/* ── Outfit color dots ───────────────────────────── */
+.outfit-color-dots {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+}
+
+.color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.15);
+  display: inline-block;
+}
