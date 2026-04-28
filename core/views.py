@@ -1,5 +1,7 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Profile
+from django.shortcuts import render
+from .models import UserProfile
 import json
 
 def profile_api(request):
@@ -27,3 +29,31 @@ def profile_api(request):
         profile.save()
 
         return JsonResponse({"status": "saved"})
+
+def styling(request):
+    # your logic
+    return HttpResponse("Styling page")
+
+def tryon(request):
+    profile_exists = UserProfile.objects.exists()
+    return render(request, 'tryon.html', {'profile_exists': profile_exists})
+
+
+def profile(request):
+    if request.method == 'POST':
+        skin_tone = request.POST.get('skin_tone')
+        skin_type = request.POST.get('skin_type')
+        body_type = request.POST.get('body_type')
+        gender = request.POST.get('gender')
+        location = request.POST.get('location')
+
+        UserProfile.objects.create(
+            skin_tone=skin_tone,
+            skin_type=skin_type,
+            body_type=body_type,
+            gender=gender,
+            location=location
+        )
+        return redirect('tryon')
+
+    return render(request, 'profile.html')

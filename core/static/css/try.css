@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+    color: #111827;
+}
+
+/* Top Title Bar */
+body::before {
+    content: "StyleMate AI - Smart Wardrobe";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    background: #ffffff;
+    text-align: center;
+    line-height: 28px;
+    font-size: 12px;
+    color: #444;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 1100;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 28px;
+    width: 100%;
+    height: 65px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 1000;
+}
+
+/* Logo */
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #2563eb;
+}
+
+/* User Section */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 13px;
+    color: #374151;
+}
+
+/* Main Content */
+.tryon-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 140px;
+}
+
+/* Center Card */
+.profile-warning {
+    text-align: center;
+    background: transparent;
+}
+
+/* Warning Circle */
+.icon {
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    border-radius: 50%;
+    background: #fff7ed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #dc2626;
+    margin-bottom: 25px;
+    border: 1px solid #fde68a;
+}
+
+/* Heading */
+.profile-warning h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+/* Paragraph */
+.profile-warning p {
+    font-size: 18px;
+    color: #6b7280;
+    margin-bottom: 35px;
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    padding: 16px 38px;
+    background: linear-gradient(to right, #d1d5db, #9ca3af);
+    color: white;
+    text-decoration: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media(max-width: 1024px) {
+    nav {
+        gap: 14px;
+    }
+
+    nav a {
+        font-size: 12px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .profile-warning h1 {
+        font-size: 34px;
+    }
+}

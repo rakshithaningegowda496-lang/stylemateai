@@ -7,3 +7,16 @@ class Profile(models.Model):
     body_type = models.CharField(max_length=50)
     gender = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
+
+
+class UserProfile(models.Model):
+    skin_tone = models.CharField(max_length=50)
+    skin_type = models.CharField(max_length=50)
+    body_type = models.CharField(max_length=50)
+    gender = models.CharField(max_length=50)
+    location = models.CharField(max_length=100)
+
+def __str__(self):
+    return self.gender
+
+
