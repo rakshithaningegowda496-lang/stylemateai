@@ -3,7 +3,11 @@ from .models import Profile
 from django.shortcuts import render
 from .models import UserProfile
 import json
+from django.views.decorators.csrf import csrf_exempt
+from .ml_model import predict_outfit
 
+
+# 🔹 PROFILE API
 def profile_api(request):
     profile, created = Profile.objects.get_or_create(id=1)
 
@@ -30,6 +34,7 @@ def profile_api(request):
 
         return JsonResponse({"status": "saved"})
 
+<<<<<<< HEAD
 def styling(request):
     # your logic
     return HttpResponse("Styling page")
@@ -57,3 +62,24 @@ def profile(request):
         return redirect('tryon')
 
     return render(request, 'profile.html')
+=======
+
+# 🔹 GENERATE OUTFIT (AI)
+@csrf_exempt
+def generate_outfit(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        occasion = data.get("occasion")
+        mood = data.get("mood")
+
+        outfit = predict_outfit(occasion, mood)
+
+        return JsonResponse({"outfit": outfit})
+
+    return JsonResponse({"error": "Only POST allowed"})
+from django.shortcuts import render
+
+def styling_page(request):
+    return render(request, "styling.html")
+>>>>>>> 02e436f84cf7aeb21df953b9fc65d8b533f4d188
