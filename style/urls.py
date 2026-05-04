@@ -16,20 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import render
-
-# 👇 this function loads your HTML page
-def profile_page(request):
-    return render(request, "profile.html")
 
 def styling_page(request):
     return render(request, "styling.html")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
+    path('', include('core.urls')),   # all pages handled in core
+]
+=======
 
     path('', profile_page, name='profile'),   # ✅ add name
     path('styling/', styling_page, name='styling'),  # ✅ ADD THIS LINE
 
     path('', include('core.urls')),
 ]
+>>>>>>> 02e436f84cf7aeb21df953b9fc65d8b533f4d188
