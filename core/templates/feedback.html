@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styling Feedback - StyleMate</title>
+    <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>💬 StyleMate Feedback</h1>
+        <a href="/">← Back</a>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('upload')">📸 Upload</button>
+            <button class="tab-btn" onclick="switchTab('history')">📋 History</button>
+        </div>
+
+        <!-- Upload Tab -->
+        <div id="upload" class="tab-content active">
+            <div class="upload-section">
+                <div class="drag-drop" id="dragDrop">
+                    <p>📷 Drag & Drop your outfit photo here</p>
+                    <p>or</p>
+                    <input type="file" id="photoInput" accept="image/*" style="display:none">
+                    <button type="button" onclick="document.getElementById('photoInput').click()">Click to Upload</button>
+                </div>
+                <div id="previewContainer" style="display:none;">
+                    <img id="preview" alt="Preview">
+                    <button onclick="analyzeOutfit()">Analyze with AI</button>
+                </div>
+            </div>
+
+            <div id="feedbackResult" class="feedback-result"></div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history" class="tab-content">
+            <div id="historyContainer" class="feedback-history"></div>
+        </div>
+    </div>
+
+    <script src="{% static 'feedback/script.js' %}"></script>
+</body>
+</html>

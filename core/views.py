@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 from django.http import JsonResponse
 from django.shortcuts import render
+=======
+from django.http import HttpResponse, JsonResponse
+from .models import Profile
+from django.shortcuts import render
+from .models import UserProfile
+import json
+>>>>>>> 9279c106d7854342e64f690bf8c8b20f47c21ffa
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .models import Profile
@@ -41,6 +49,35 @@ def profile_api(request):
         profile.save()
         return JsonResponse({"status": "saved"})
 
+<<<<<<< HEAD
+def styling(request):
+    # your logic
+    return HttpResponse("Styling page")
+
+def tryon(request):
+    profile_exists = UserProfile.objects.exists()
+    return render(request, 'tryon.html', {'profile_exists': profile_exists})
+
+
+def profile(request):
+    if request.method == 'POST':
+        skin_tone = request.POST.get('skin_tone')
+        skin_type = request.POST.get('skin_type')
+        body_type = request.POST.get('body_type')
+        gender = request.POST.get('gender')
+        location = request.POST.get('location')
+
+        UserProfile.objects.create(
+            skin_tone=skin_tone,
+            skin_type=skin_type,
+            body_type=body_type,
+            gender=gender,
+            location=location
+        )
+        return redirect('tryon')
+
+    return render(request, 'profile.html')
+=======
 
 # 🔹 GENERATE OUTFIT (ML)
 @csrf_exempt
@@ -53,6 +90,7 @@ def generate_outfit(request):
         return JsonResponse({"outfit": outfit})
     return JsonResponse({"error": "Only POST allowed"})
 
+<<<<<<< HEAD
 
 # 🔹 WEATHER API  ← NEW
 @csrf_exempt
@@ -125,3 +163,8 @@ def save_outfit_api(request):
         )
         return JsonResponse({"status": "saved"})
     return JsonResponse({"error": "POST required"}, status=405)
+=======
+def styling_page(request):
+    return render(request, "styling.html")
+>>>>>>> 02e436f84cf7aeb21df953b9fc65d8b533f4d188
+>>>>>>> 9279c106d7854342e64f690bf8c8b20f47c21ffa
