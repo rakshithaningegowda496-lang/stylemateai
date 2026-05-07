@@ -19,12 +19,12 @@
     StyleMate AI
   </a>
   <ul class="nav-links">
-    <li>Home</li>
+    <li><a href="{% url 'home' %}" data-page="home">Home</a></li>
     <li><a href="{% url 'profile' %}" data-page="profile">Profile</a></li>
     <li class="active">Styling</li>
-    <li>Wardrobe</li>
-    <li>Try-On</li>
-    <li>Feedback</li>
+    <li><a href="{% url 'wardrobe' %}" class="link"><h3>Wardrobe</h3></a></li>
+    <li><a href="{% url 'tryon' %}" class="link"><h3>Try-On</h3></a></li>
+    <li><a href="{% url 'feedback' %}" class="link"><h3>Feedback</h3></a></li>
   </ul>
   <div class="nav-right">
     <button class="theme-btn" title="Toggle theme">🌙</button>
