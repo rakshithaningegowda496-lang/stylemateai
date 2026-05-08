@@ -35,12 +35,15 @@
   <div class="grid">
 
     <!-- LEFT CARD -->
-    <div class="card profile-card">
-      <div class="avatar"></div>
-      <h3 id="username">User</h3>
-      <p id="location">📍 Loading...</p>
-      <button>Edit Profile</button>
-    </div>
+    <div class="card">
+  <video id="camera" width="200" autoplay></video>
+  <button onclick="startCamera()">Start Camera</button>
+  <button onclick="capturePhoto()">Capture</button>
+
+  <input type="file" id="imageUpload">
+
+  <button onclick="analyzeImage()">Analyze</button>
+</div>
 
     <!-- RIGHT FORM -->
     <div class="card form-card">
