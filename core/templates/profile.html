@@ -1,106 +1,146 @@
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>StyleMate AI - Profile</title>
-
-    {% load static %}  <!-- ✅ VERY IMPORTANT -->
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StyleMate AI</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-
 <body>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-  <h2>✨ StyleMate AI</h2>
-  <ul>
-    <li>Home</li>
-    <li class="active">Profile</li>
-    <li>Wardrobe</li>
-    <li>Styling</li>
-    <li>Try-On</li>
-    <li>Feedback</li>
-    <li>Professions</li>
-  </ul>
-</nav>
-
-<!-- MAIN -->
-<div class="container">
-
-  <h1>Your Style Profile</h1>
-  <p class="subtitle">Tell us about yourself to unlock personalized AI styling.</p>
-
-  <div class="grid">
-
-    <!-- LEFT CARD -->
-    <div class="card">
-  <video id="camera" width="200" autoplay></video>
-  <button onclick="startCamera()">Start Camera</button>
-  <button onclick="capturePhoto()">Capture</button>
-
-  <input type="file" id="imageUpload">
-
-  <button onclick="analyzeImage()">Analyze</button>
-</div>
-
-    <!-- RIGHT FORM -->
-    <div class="card form-card">
-
-      <div class="form-grid">
-        <div>
-          <label>Skin Tone</label>
-          <input id="skin_tone">
-        </div>
-
-        <div>
-          <label>Skin Type</label>
-          <input id="skin_type">
-        </div>
-
-        <div>
-          <label>Body Type</label>
-          <select id="body_type">
-            <option>Rectangle</option>
-            <option>Triangle</option>
-            <option>Oval</option>
-          </select>
-        </div>
-
-        <div>
-          <label>Gender</label>
-          <select id="gender">
-            <option>Prefer Not To Say</option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label>Location</label>
-        <input id="user_location">
-      </div>
-
-      <button onclick="saveProfile()">Save</button>
-
-      <div class="success" id="statusMsg"></div>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M20 8c0 6.627-5.373 12-12 12 6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M46 13v14M39 20h14" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="16" cy="48" r="6" fill="none" stroke="currentColor" stroke-width="4"/>
+      </svg>
+      <span>StyleMate AI</span>
     </div>
 
-  </div>
+    <nav class="nav">
+      <a href="#">Home</a>
+      <a class="active" href="#">Profile</a>
+      <a href="#">Wardrobe</a>
+      <a href="#">Styling</a>
+      <a href="#">Try-On</a>
+      <a href="#">Feedback</a>
+      <a href="#">Professions</a>
+    </nav>
 
-  <!-- WEATHER -->
-  <div class="card weather">
-    <h3>Local Weather</h3>
-    <h2 id="temp">--°C</h2>
-    <p id="weather">Loading...</p>
-  </div>
+    <button class="icon-btn" aria-label="Toggle theme">☾</button>
+  </header>
 
+  <main class="page">
+    <section class="hero">
+      <h1>Your Style Profile</h1>
+      {% if step == 1 %}
+        <p>Tell us the basics to help our AI understand your style context.</p>
+      {% else %}
+        <p>Snap a photo or upload one. Our AI will analyze your features automatically.</p>
+      {% endif %}
+    </section>
+
+    <section class="steps">
+      <div class="step {% if step >= 1 %}current{% endif %}">
+        <div class="bubble {% if step > 1 %}done{% endif %}">
+          {% if step > 1 %}✓{% else %}1{% endif %}
+        </div>
+        <div class="label">Basics</div>
+      </div>
+      <div class="step {% if step == 2 %}current{% endif %}">
+        <div class="bubble {% if step == 2 %}current-bubble{% endif %}">
+          2
+        </div>
+        <div class="label">Analysis</div>
+      </div>
+    </section>
+
+    <section class="card">
+      {% if saved %}
+        <div class="success">Saved successfully.</div>
+      {% endif %}
+
+      <form method="post" class="form">
+        {% csrf_token %}
+
+        <input type="hidden" name="step" value="{{ step }}">
+
+        <div class="panel {% if step != 1 %}hidden{% endif %}" id="step1">
+          <label class="field full">
+            <span>Full Name</span>
+            <input type="text" name="full_name" placeholder="Your name" value="{{ name }}">
+          </label>
+
+          <div class="grid-2">
+            <label class="field">
+              <span>Age</span>
+              <input type="text" name="age" value="{{ age }}">
+            </label>
+
+            <label class="field">
+              <span>Gender Identity</span>
+              <select name="gender_identity">
+                {% for option in gender_choices %}
+                  <option value="{{ option }}" {% if gender_identity == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+              </select>
+            </label>
+          </div>
+
+          <button class="primary" type="submit" name="action" value="continue">Continue to Analysis <span>›</span></button>
+        </div>
+
+        <div class="panel {% if step != 2 %}hidden{% endif %}" id="step2">
+          
+<div class="upload-grid">
+    <label class="dropbox clickable" for="cameraInput">
+        <div class="drop-icon">📹</div>
+        <div class="drop-title">CAMERA</div>
+        <input type="file" accept="image/*" capture="user" id="cameraInput" hidden>
+    </label>
+
+    <label class="dropbox clickable" for="uploadInput">
+        <div class="drop-icon">📷</div>
+        <div class="drop-title">UPLOAD</div>
+        <input type="file" accept="image/*" id="uploadInput" hidden>
+    </label>
 </div>
 
-<!-- JS -->
-<script src="{% static 'js/main.js' %}"></script>
+<div class="preview-wrapper hidden" id="previewWrapper">
+    <img id="previewImage" class="preview-image" src="" alt="Preview">
+</div>
 
+
+          <div class="grid-2 info-grid">
+            <label class="field">
+              <span>Skin Tone</span>
+              <input type="text" name="skin_tone" value="{{ skin_tone }}">
+            </label>
+            <label class="field">
+              <span>Body Type</span>
+              <input type="text" name="body_type" value="{{ body_type }}">
+            </label>
+            <label class="field">
+              <span>Skin Type</span>
+              <input type="text" name="skin_type" value="{{ skin_type }}">
+            </label>
+            <label class="field">
+              <span>Gender</span>
+              <input type="text" name="gender" value="{{ gender }}">
+            </label>
+          </div>
+
+          <button class="primary save" type="submit" name="action" value="finish">✓ Save &amp; Finish Setup</button>
+
+          <hr class="divider">
+
+          <button class="back" type="submit" name="action" value="back">Back</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="{% static 'js/profile.js' %}"></script>
 </body>
 </html>

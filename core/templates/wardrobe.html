@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wardrobe Manager - StyleMate</title>
+    <link rel="stylesheet" href="{% static 'wardrobe/style.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>👗 StyleMate Wardrobe</h1>
+        <a href="/">← Back</a>
+    </div>
+
+    <div class="container">
+        <!-- Add Item Form -->
+        <div class="add-item-section">
+            <h2>Add New Item</h2>
+            <form id="addItemForm">
+                <input type="text" id="itemName" placeholder="Item Name" required>
+                <input type="color" id="itemColor" value="#000000" required>
+                <select id="itemType" required>
+                    <option value="">Select Type</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                    <option value="shoes">Shoes</option>
+                    <option value="accessory">Accessory</option>
+                </select>
+                <select id="itemStyle" required>
+                    <option value="">Select Style</option>
+                    <option value="casual">Casual</option>
+                    <option value="formal">Formal</option>
+                    <option value="party">Party</option>
+                </select>
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+
+        <!-- Wardrobe Insights -->
+        <div class="insights-section">
+            <h2>📊 Wardrobe Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h3 id="totalItems">0</h3>
+                    <p>Total Items</p>
+                </div>
+                <div class="insight-card">
+                    <h3 id="topCount">0</h3>
+                    <p>Tops</p>
+                </div>
+                <div class="insight-card">
+                    <h3 id="bottomCount">0</h3>
+                    <p>Bottoms</p>
+                </div>
+                <div class="insight-card">
+                    <h3 id="shoeCount">0</h3>
+                    <p>Shoes</p>
+                </div>
+            </div>
+            <div id="gapAnalysis" class="gap-analysis"></div>
+        </div>
+
+        <!-- Wardrobe Items Grid -->
+        <div class="items-section">
+            <h2>My Wardrobe</h2>
+            <div id="wardrobeGrid" class="wardrobe-grid"></div>
+        </div>
+    </div>
+
+    <script src="{% static 'wardrobe/script.js' %}"></script>
+</body>
+</html>
