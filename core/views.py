@@ -7,7 +7,7 @@ import json
 import requests
 
 def home(request):
-    return render(request, 'tryon.html')
+    return render(request, 'home.html')
 
 def styling_page(request):
     return render(request, 'styling.html')
