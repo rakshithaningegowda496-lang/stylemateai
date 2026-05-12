@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleMate AI - Smart Wardrobe</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f4ede6;
+  --bg2:#ede6de;
+  --card:#ffffff;
+  --text:#1c1a18;
+  --mid:#5a5550;
+  --soft:#9a9088;
+  --tan:#c4aa90;
+  --tanl:#d9c8b4;
+  --border:rgba(0,0,0,0.09);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
+a{text-decoration:none;color:inherit;}
+
+/* NAVBAR */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:66px;
+  background:rgba(244,237,230,0.95);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:99;
+  backdrop-filter:blur(12px);
+}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:17px;}
+.brand-icon{color:var(--tan);font-size:20px;}
+.nav-links{display:flex;list-style:none;gap:4px;}
+.nav-links a{
+  font-size:14px;color:var(--mid);
+  padding:6px 14px;border-radius:30px;
+  transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text);font-weight:500;}
+.moon{
+  background:none;border:1px solid var(--border);
+  border-radius:50%;width:36px;height:36px;
+  cursor:pointer;font-size:15px;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:80px 40px 60px;
+  max-width:860px;margin:0 auto;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.7);
+  border:1px solid var(--border);
+  border-radius:40px;padding:7px 20px;
+  font-size:13px;color:var(--soft);
+  margin-bottom:44px;
+}
+.badge-star{color:var(--tan);}
+.hero h1{
+  font-weight:700;
+  font-size:clamp(36px,5vw,64px);
+  letter-spacing:-1.5px;line-height:1.05;
+  margin-bottom:12px;
+}
+.hero h2{
+  font-weight:600;
+  font-size:clamp(32px,4.5vw,58px);
+  letter-spacing:-1.5px;line-height:1.1;
+  color:var(--tan);
+  margin-bottom:40px;
+}
+.hero p{
+  font-size:16px;color:var(--mid);
+  line-height:1.75;margin-bottom:44px;
+}
+.cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-fill{
+  background:var(--tan);color:var(--text);
+  font-weight:500;font-size:15px;
+  padding:14px 34px;border-radius:50px;
+  transition:background .2s,transform .2s;
+  display:inline-block;
+}
+.btn-fill:hover{background:var(--tanl);transform:translateY(-2px);}
+.btn-ring{
+  background:transparent;color:var(--text);
+  font-weight:500;font-size:15px;
+  padding:13px 34px;border-radius:50px;
+  border:1.5px solid var(--text);
+  transition:all .2s;display:inline-block;
+}
+.btn-ring:hover{background:var(--text);color:var(--bg);transform:translateY(-2px);}
+
+/* FEATURES */
+.features{
+  padding:60px 40px 80px;
+  max-width:1200px;margin:0 auto;
+}
+.feat-head{text-align:center;margin-bottom:48px;}
+.feat-head h2{
+  font-weight:700;font-size:clamp(24px,3vw,36px);
+  letter-spacing:-.5px;margin-bottom:10px;
+}
+.feat-head p{font-size:15px;color:var(--soft);}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+@media(max-width:960px){.cards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.cards{grid-template-columns:1fr;}}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:32px 26px 28px;
+  transition:transform .25s,box-shadow .25s;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,.09);}
+.icon-wrap{
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:22px;
+}
+.ic-blue  {background:#dde9f8;color:#5580bb;}
+.ic-purple{background:#ecddf5;color:#9060bb;}
+.ic-pink  {background:#fce0ea;color:#cc5a7a;}
+.ic-yellow{background:#fef2cc;color:#b89022;}
+.card h3{font-weight:600;font-size:17px;margin-bottom:10px;}
+.card p{font-size:14px;color:var(--soft);line-height:1.65;margin-bottom:24px;}
+.learn{font-size:13px;color:var(--soft);font-weight:500;transition:color .2s;}
+.learn:hover{color:var(--text);}
+
+/* QUOTE */
+.quote-sec{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:90px 40px;text-align:center;
+}
+blockquote{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(20px,2.5vw,32px);
+  line-height:1.55;color:var(--text);
+  max-width:800px;margin:0 auto 22px;
+}
+cite{
+  font-style:normal;font-size:15px;
+  font-weight:600;color:var(--mid);
+}
+
+/* FOOTER */
+footer{padding:52px 40px;text-align:center;}
+.foot-brand{
+  display:flex;align-items:center;gap:8px;
+  justify-content:center;
+  font-weight:600;font-size:18px;margin-bottom:6px;
+}
+.foot-tag{font-size:14px;color:var(--soft);margin-top:4px;}
+.foot-copy{font-size:12px;color:#bbb4aa;margin-top:8px;}
+
+/* DARK MODE */
+body.dark{
+  --bg:#1b1814;--bg2:#201d19;
+  --card:#242019;--text:#f0ece6;
+  --mid:#c4bdb5;--soft:#7a746e;
+  --tan:#b89a7e;--tanl:#cbb89e;
+  --border:rgba(255,255,255,0.08);
+}
+body.dark nav{background:rgba(27,24,20,.92);}
+
+@media(max-width:600px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .hero{padding:60px 20px 48px;}
+  .features{padding:48px 20px 60px;}
+  .quote-sec{padding:60px 20px;}
+  footer{padding:40px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="brand">
+    <span class="brand-icon">✦</span>
+    StyleMate AI
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/profile/">Profile</a></li>
+    <li><a href="/wardbrobe/">Wardrobe</a></li>
+    <li><a href="/styling/">Styling</a></li>
+    <li><a href="/feedback/">Feedback</a></li>
+  </ul>
+
+  <button class="moon" onclick="toggleDark()">🌙</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">
+    <span class="badge-star">✦</span>
+    AI-Powered Fashion Intelligence
+  </div>
+
+  <h1>Your Personal AI Stylist –</h1>
+  <h2>Dress Smart, Look<br>Confident</h2>
+
+  <p>
+    Unlock the power of your wardrobe with AI insights, personalized styling,<br>
+    and virtual try-on simulations.
+  </p>
+
+  <div class="cta-row">
+    <a href="/styling/" class="btn-fill">Try Styling Now</a>
+    <a href="/wardrobe/" class="btn-ring">Analyze Wardrobe</a>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="feat-head">
+    <h2>Elevate Your Style Game</h2>
+    <p>Everything you need to manage your closet and look your best every single day.</p>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="icon-wrap ic-blue">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.86H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.86l.58-3.57a2 2 0 00-1.34-2.23z"/>
+        </svg>
+      </div>
+      <h3>Analyze Wardrobe</h3>
+      <p>Upload your items and get instant insights into your style gaps.</p>
+      <a href="/wardrobe/" class="learn">Learn More ✦</a>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap ic-purple">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/>
+        </svg>
+      </div>
+      <h3>AI Styling</h3>
+      <p>Personalized outfit suggestions based on your mood and weather.</p>
+      <a href="/styling/" class="learn">Learn More ✦</a>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap ic-pink">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+      </div>
+      <h3>Virtual Try-On</h3>
+      <p>See how outfits look on you with our mock simulation engine.</p>
+      <a href="/styling/" class="learn">Learn More ✦</a>
+    </div>
+
+    <div class="card">
+      <div class="icon-wrap ic-yellow">
+        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
+        </svg>
+      </div>
+      <h3>Model Aspirant</h3>
+      <p>Specialized guide for ramp walks, poses, and grooming.</p>
+      <a href="/styling/" class="learn">Learn More ✦</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-sec">
+  <blockquote>
+    "Fashion is about dressing according to what's fashionable. Style is more about being yourself."
+  </blockquote>
+  <cite>— Oscar de la Renta</cite>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-brand">
+    <span style="color:var(--tan)">✦</span>
+    StyleMate AI
+  </div>
+  <p class="foot-tag">Your Personal AI Stylist – Dress Smart, Look Confident.</p>
+  <p class="foot-copy">© 2026 StyleMate AI. All rights reserved.</p>
+</footer>
+
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const btn = document.querySelector('.moon');
+  btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
+if(localStorage.getItem('theme')==='dark'){
+  document.body.classList.add('dark');
+  document.querySelector('.moon').textContent='☀️';
+}
+</script>
+
+</body>
+</html>

@@ -19,12 +19,12 @@
     StyleMate AI
   </a>
   <ul class="nav-links">
-    <li>Home</li>
+    <li><a href="{% url 'home' %}" data-page="home">Home</a></li>
     <li><a href="{% url 'profile' %}" data-page="profile">Profile</a></li>
     <li class="active">Styling</li>
-    <li>Wardrobe</li>
-    <li>Try-On</li>
-    <li>Feedback</li>
+    <li><a href="{% url 'wardrobe' %}" class="link"><h3>Wardrobe/h3></a></li>
+    <li><a href="{% url 'tryon' %}" class="link"><h3>Try-On</h3></a></li>
+    <li><a href="{% url 'feedback' %}" class="link"><h3>Feedback</h3></a></li>
   </ul>
   <div class="nav-right">
     <button class="theme-btn" title="Toggle theme">🌙</button>
@@ -135,23 +135,111 @@
   </div>
 
   <!-- PREVIEW PANEL -->
-  <div class="preview-panel" id="preview-panel">
-    <div class="preview-placeholder" id="preview-placeholder">
-      <div class="preview-icon">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-        </svg>
-      </div>
-      <h2>Ready to Style?</h2>
-      <p>Select your occasion, profession, and mood to see personalized outfit combinations.</p>
+   <!-- PREVIEW PANEL -->
+<div class="preview-panel" id="preview-panel">
+
+  <!-- Initial Placeholder -->
+  <div class="preview-placeholder" id="preview-placeholder">
+    
+    <div class="preview-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
     </div>
 
-    <div class="spinner" id="spinner" style="display:none;"></div>
+    <h2>Ready to Style?</h2>
 
-    <div class="outfit-grid" id="outfit-grid" style="display:none;"></div>
+    <p>
+      Select your occasion, profession, and mood to see personalized outfit combinations.
+    </p>
+
+  </div>
+
+  <!-- Spinner -->
+  <div class="spinner" id="spinner" style="display:none;"></div>
+
+  <!-- Outfit Grid -->
+  <div class="outfit-grid" id="outfit-grid" style="display:none;"></div>
+
+  <!-- TRY ON SECTION -->
+  <div class="tryon-section"
+       id="tryon-section"
+       style="margin-top:24px;">
+
+    <hr style="margin:20px 0;">
+
+    <h2 style="margin-bottom:10px;">
+      Virtual Try-On
+    </h2>
+
+    <p style="margin-bottom:16px; color:#777;">
+      Upload your image to preview the outfit on yourself.
+    </p>
+
+    <!-- Upload Image -->
+    <input type="file"
+           id="user-image"
+           accept="image/*"
+           style="
+             width:100%;
+             padding:12px;
+             border:1px solid #ddd;
+             border-radius:12px;
+             margin-bottom:16px;
+           ">
+
+    <!-- Preview Uploaded User Image -->
+    <div id="user-preview"
+         style="display:none; margin-bottom:20px;">
+
+      <h3 style="margin-bottom:10px;">
+        Your Uploaded Image
+      </h3>
+
+      <img id="user-preview-img"
+           src=""
+           alt="User Preview"
+           style="
+             width:220px;
+             border-radius:16px;
+             border:1px solid #ddd;
+           ">
+    </div>
+
+    <!-- Generate Try On -->
+    <button class="generate-btn"
+            onclick="generateTryOn()">
+
+      Generate Try-On
+
+    </button>
+
+    <!-- Final Result -->
+    <div id="tryon-result"
+         style="display:none; margin-top:24px;">
+
+      <h3 style="margin-bottom:12px;">
+        Try-On Result
+      </h3>
+
+      <img id="result-img"
+           src=""
+           alt="Try-On Result"
+           style="
+             width:300px;
+             border-radius:18px;
+             border:1px solid #ddd;
+           ">
+    </div>
+
   </div>
 
 </div>
+  
+
+
 
 <!-- FOOTER -->
 <footer>
@@ -165,7 +253,65 @@
   <div class="footer-copy">© 2026 StyleMate AI. All rights reserved.</div>
 </footer>
 
-<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/main.js' %}">
+  // ───── SHOW TRY-ON SECTION ─────
+
+function showTryOnSection() {
+
+  document.getElementById("tryon-section").style.display = "block";
+
+}
+
+// ───── IMAGE PREVIEW ─────
+
+document.addEventListener("change", function(e) {
+
+  if (e.target.id === "user-image") {
+
+    const file = e.target.files[0];
+
+    if (file) {
+
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+
+        document.getElementById("user-preview").style.display = "block";
+
+        document.getElementById("user-preview-img").src =
+          event.target.result;
+
+      };
+
+      reader.readAsDataURL(file);
+
+    }
+
+  }
+
+});
+
+// ───── DEMO TRY-ON RESULT ─────
+
+function generateTryOn() {
+
+  const uploadedImage =
+    document.getElementById("user-preview-img").src;
+
+  if (!uploadedImage) {
+
+    alert("Please upload your image first.");
+
+    return;
+
+  }
+
+  document.getElementById("tryon-result").style.display = "block";
+
+  document.getElementById("result-img").src = uploadedImage;
+
+}
+</script>
 <script>
 // ─── Skin tone → color palette map ───────────────────────────────────────────
 const SKIN_TONE_COLORS = {
@@ -361,6 +507,7 @@ function renderOutfits(outfits, occasion) {
   `).join("");
 
   grid.style.display = "grid";
+  showTryOnSection();
 }
 </script>
 </body>
