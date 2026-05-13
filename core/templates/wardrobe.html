@@ -1,72 +1,189 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wardrobe Manager - StyleMate</title>
-    <link rel="stylesheet" href="{% static 'wardrobe/style.css' %}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StyleMate AI - Wardrobe</title>
+
+    <link rel="stylesheet" href="{% static 'css/wardrobe.css' %}" />
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 </head>
+
 <body>
-    <div class="navbar">
-        <h1>👗 StyleMate Wardrobe</h1>
-        <a href="/">← Back</a>
-    </div>
 
-    <div class="container">
-        <!-- Add Item Form -->
-        <div class="add-item-section">
-            <h2>Add New Item</h2>
-            <form id="addItemForm">
-                <input type="text" id="itemName" placeholder="Item Name" required>
-                <input type="color" id="itemColor" value="#000000" required>
-                <select id="itemType" required>
-                    <option value="">Select Type</option>
-                    <option value="top">Top</option>
-                    <option value="bottom">Bottom</option>
-                    <option value="shoes">Shoes</option>
-                    <option value="accessory">Accessory</option>
-                </select>
-                <select id="itemStyle" required>
-                    <option value="">Select Style</option>
-                    <option value="casual">Casual</option>
-                    <option value="formal">Formal</option>
-                    <option value="party">Party</option>
-                </select>
-                <button type="submit">Add Item</button>
-            </form>
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <div class="logo-section">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <h2>StyleMate AI</h2>
         </div>
 
-        <!-- Wardrobe Insights -->
-        <div class="insights-section">
-            <h2>📊 Wardrobe Insights</h2>
-            <div class="insights-grid">
-                <div class="insight-card">
-                    <h3 id="totalItems">0</h3>
-                    <p>Total Items</p>
-                </div>
-                <div class="insight-card">
-                    <h3 id="topCount">0</h3>
-                    <p>Tops</p>
-                </div>
-                <div class="insight-card">
-                    <h3 id="bottomCount">0</h3>
-                    <p>Bottoms</p>
-                </div>
-                <div class="insight-card">
-                    <h3 id="shoeCount">0</h3>
-                    <p>Shoes</p>
-                </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a class="active" href="#">Wardrobe</a></li>
+                <li><a href="#">Styling</a></li>
+                <li><a href="#">Try-On</a></li>
+                <li><a href="{% url 'feedback' %}">Feedback</a></li>
+                <li><a href="#">Professions</a></li>
+            </ul>
+        </nav>
+
+        <div class="theme-icon">
+            <i class="fa-regular fa-moon"></i>
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero-section">
+
+        <div>
+            <h1>Your Wardrobe</h1>
+            <p>
+                Manage your collection and get AI-powered insights into your style.
+            </p>
+        </div>
+
+        <button class="add-btn">
+            <i class="fa-solid fa-plus"></i>
+            Add New Item
+        </button>
+
+    </section>
+
+
+    <!-- CARDS -->
+    <section class="wardrobe-grid" id="wardrobeGrid">
+
+        <!-- CARD -->
+        <div class="card">
+
+            <div class="card-image">
+                <img
+                    src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800"
+                    alt="shirt"
+                />
+
+                <button class="delete-btn">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             </div>
-            <div id="gapAnalysis" class="gap-analysis"></div>
+
+            <div class="card-content">
+
+                <div class="top-row">
+                    <span>TOP</span>
+                    <span>CASUAL</span>
+                </div>
+
+                <h3>Shirt</h3>
+
+                <div class="color-row">
+                    <div class="color-dot blue"></div>
+                    <p>Light Blue</p>
+                </div>
+
+            </div>
         </div>
 
-        <!-- Wardrobe Items Grid -->
-        <div class="items-section">
-            <h2>My Wardrobe</h2>
-            <div id="wardrobeGrid" class="wardrobe-grid"></div>
-        </div>
-    </div>
 
-    <script src="{% static 'wardrobe/script.js' %}"></script>
+        <!-- CARD -->
+        <div class="card">
+
+            <div class="card-image">
+                <img
+                    src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800"
+                    alt="shoe"
+                />
+            </div>
+
+            <div class="card-content">
+
+                <div class="top-row">
+                    <span>FOOTWEAR</span>
+                    <span>CASUAL</span>
+                </div>
+
+                <h3>Sneakers</h3>
+
+                <div class="color-row">
+                    <div class="color-dot white"></div>
+                    <p>White</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- CARD -->
+        <div class="card">
+
+            <div class="card-image">
+                <img
+                    src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=800"
+                    alt="watch"
+                />
+            </div>
+
+            <div class="card-content">
+
+                <div class="top-row">
+                    <span>ACCESSORIES</span>
+                    <span>FORMAL</span>
+                </div>
+
+                <h3>Watch</h3>
+
+                <div class="color-row">
+                    <div class="color-dot silver"></div>
+                    <p>Silver</p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- CARD -->
+        <div class="card">
+
+            <div class="card-image">
+                <img
+                    src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800"
+                    alt="pants"
+                />
+            </div>
+
+            <div class="card-content">
+
+                <div class="top-row">
+                    <span>BOTTOM</span>
+                    <span>FORMAL</span>
+                </div>
+
+                <h3>Dress Pants</h3>
+
+                <div class="color-row">
+                    <div class="color-dot black"></div>
+                    <p>Black</p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+    <script src="{% static 'js/wardrobe.js' %}"></script>
+
 </body>
 </html>

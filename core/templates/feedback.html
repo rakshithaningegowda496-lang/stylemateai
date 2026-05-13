@@ -1,47 +1,130 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Styling Feedback - StyleMate</title>
-    <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
-</head>
-<body>
-    <div class="navbar">
-        <h1>💬 StyleMate Feedback</h1>
-        <a href="/">← Back</a>
-    </div>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>StyleMate AI - Feedback</title>
 
-    <div class="container">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('upload')">📸 Upload</button>
-            <button class="tab-btn" onclick="switchTab('history')">📋 History</button>
+    <link rel="stylesheet" href="{% static 'css/feedback.css' %}" />
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="logo-section">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <h2>StyleMate AI</h2>
         </div>
 
-        <!-- Upload Tab -->
-        <div id="upload" class="tab-content active">
-            <div class="upload-section">
-                <div class="drag-drop" id="dragDrop">
-                    <p>📷 Drag & Drop your outfit photo here</p>
-                    <p>or</p>
-                    <input type="file" id="photoInput" accept="image/*" style="display:none">
-                    <button type="button" onclick="document.getElementById('photoInput').click()">Click to Upload</button>
-                </div>
-                <div id="previewContainer" style="display:none;">
-                    <img id="preview" alt="Preview">
-                    <button onclick="analyzeOutfit()">Analyze with AI</button>
-                </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="{% url 'wardrobe' %}">Wardrobe</a></li>
+                <li><a href="#">Styling</a></li>
+                <li><a href="#">Try-On</a></li>
+                <li><a class="active" href="#">Feedback</a></li>
+                <li><a href="#">Professions</a></li>
+            </ul>
+        </nav>
+
+        <div class="theme-icon">
+            <i class="fa-regular fa-moon"></i>
+        </div>
+
+    </header>
+
+
+    <!-- TITLE -->
+
+    <section class="feedback-title">
+
+        <h1>AI Styling Feedback</h1>
+
+        <p>
+            Upload a photo of your outfit and get professional styling critiques.
+        </p>
+
+    </section>
+
+
+    <!-- MAIN -->
+
+    <section class="feedback-wrapper">
+
+        <!-- LEFT -->
+
+        <div class="upload-box">
+
+            <div class="upload-area" id="uploadArea">
+
+                <i class="fa-solid fa-upload"></i>
+
+                <h2>Drop your photo here</h2>
+
+                <p>PNG, JPG up to 10MB</p>
+
+                <input type="file" id="fileInput" hidden />
+
+                <button id="selectBtn">Select Photo</button>
+
             </div>
 
-            <div id="feedbackResult" class="feedback-result"></div>
+            <button class="feedback-btn">
+                <i class="fa-solid fa-sparkles"></i>
+                Get AI Feedback
+            </button>
+
         </div>
 
-        <!-- History Tab -->
-        <div id="history" class="tab-content">
-            <div id="historyContainer" class="feedback-history"></div>
-        </div>
-    </div>
 
-    <script src="{% static 'feedback/script.js' %}"></script>
+        <!-- RIGHT -->
+
+        <div class="result-box" id="resultBox">
+
+            <i class="fa-regular fa-image"></i>
+
+            <h2>Awaiting Style</h2>
+
+            <p>
+                Upload a photo of your outfit to receive a detailed AI analysis.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <h2>StyleMate AI</h2>
+
+        <p>
+            Your Personal AI Stylist – Dress Smart, Look Confident.
+        </p>
+
+        <small>
+            © 2026 StyleMate AI. All rights reserved.
+        </small>
+
+    </footer>
+
+
+    <script src="{% static 'js/feedback.js' %}"></script>
+
 </body>
 </html>

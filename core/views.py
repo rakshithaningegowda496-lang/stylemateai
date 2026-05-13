@@ -1,246 +1,112 @@
-<<<<<<< HEAD
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.shortcuts import render
-=======
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from .models import Profile, UserProfile, WardrobeItem
-import json
-import requests
 
+
+# HOME PAGE
 def home(request):
     return render(request, 'home.html')
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
 
-GENDER_CHOICES = ['Female', 'Male', 'Non-binary', 'Prefer Not To Say']
+
+# PROFILE PAGE
+def profile(request):
+    return render(request, 'profile.html')
+
 
 def profile_page(request):
-    step = int(request.POST.get('step', request.GET.get('step', 1)))
-    context = {
-        'step': step,
-        'name': request.POST.get('full_name', request.session.get('full_name', '')),
-        'age': request.POST.get('age', request.session.get('age', '23')),
-        'gender_identity': request.POST.get('gender_identity', request.session.get('gender_identity', 'Prefer Not To Say')),
-        'skin_tone': request.POST.get('skin_tone', request.session.get('skin_tone', 'Fair')),
-        'body_type': request.POST.get('body_type', request.session.get('body_type', 'Slim')),
-        'skin_type': request.POST.get('skin_type', request.session.get('skin_type', 'Normal')),
-        'gender': request.POST.get('gender', request.session.get('gender', 'Female')),
-        'gender_choices': GENDER_CHOICES,
-    }
-
-    if request.method == 'POST':
-        for key in ['full_name', 'age', 'gender_identity', 'skin_tone', 'body_type', 'skin_type', 'gender']:
-            value = request.POST.get(key)
-            if value is not None:
-                request.session[key] = value
-
-        if request.POST.get('action') == 'continue':
-            context['step'] = 2
-        elif request.POST.get('action') == 'back':
-            context['step'] = 1
-        elif request.POST.get('action') == 'finish':
-            context['step'] = 2
-            context['saved'] = True
-
-    return render(request, 'profile.html', context)
+    return render(request, 'profile.html')
 
 
-# Styling Page
+# STYLING PAGE
 def styling_page(request):
-<<<<<<< HEAD
-    return render(request, "styling.html")
-=======
     return render(request, 'styling.html')
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
 
 
-# Try On Page
+# TRY ON PAGE
 def tryon(request):
-    return render(request, "tryon.html")
+    return render(request, 'tryon.html')
 
+
+# FEEDBACK PAGE
 def feedback(request):
     return render(request, 'feedback.html')
 
-<<<<<<< HEAD
-# Feedback Page
-def feedback(request):
-    return render(request, "feedback.html")
 
-
-# Wardrobe Page
+# WARDROBE PAGE
 def wardrobe(request):
-    return render(request, "wardrobe.html")
+    return render(request, 'wardrobe.html')
 
 
-# API - Profile
-def profile_api(request):
-
-    return JsonResponse({
-        "message": "Profile API working"
-    })
-
-
-# API - Weather
-def weather_api(request):
-
-    return JsonResponse({
-        "weather": "Sunny"
-    })
-
-
-# API - Save Outfit
-def save_outfit_api(request):
-
-    return JsonResponse({
-        "status": "saved"
-    })
-
-
-# AI Outfit Generator
+# GENERATE OUTFIT API
 def generate_outfit(request):
 
-    return JsonResponse({
-        "outfit": "Casual Jeans + White Shirt"
-    })
-=======
-def profile(request):
-    if request.method == 'POST':
-        UserProfile.objects.create(
-            skin_tone=request.POST.get('skin_tone'),
-            skin_type=request.POST.get('skin_type'),
-            body_type=request.POST.get('body_type'),
-            gender=request.POST.get('gender'),
-            location=request.POST.get('location'),
-        )
-        return redirect('tryon')
-    return render(request, 'profile.html')
+    data = {
+        "status": "success",
+        "message": "Outfit generated successfully"
+    }
 
-def wardrobe(request):
-    items = WardrobeItem.objects.all()
-    return render(request, 'wardrobe.html', {'items': items})
+    return JsonResponse(data)
 
-@csrf_exempt
+
+# PROFILE API
 def profile_api(request):
-    p, _ = Profile.objects.get_or_create(id=1)
-    if request.method == 'GET':
-        return JsonResponse({'name': p.name, 'skin_tone': p.skin_tone, 'skin_type': p.skin_type, 'body_type': p.body_type, 'gender': p.gender, 'location': p.location})
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        p.skin_tone = data.get('skin_tone')
-        p.skin_type = data.get('skin_type')
-        p.body_type = data.get('body_type')
-        p.gender = data.get('gender')
-        p.location = data.get('location')
-        p.save()
-        return JsonResponse({'status': 'saved'})
 
-@csrf_exempt
-def wardrobe_api(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        item = WardrobeItem.objects.create(
-            name=data.get('name'),
-            color=data.get('color'),
-            fabric=data.get('fabric'),
-            occasion=data.get('occasion'),
-            season=data.get('season'),
-            category=data.get('category'),
-        )
-        return JsonResponse({'status': 'added', 'id': item.id})
-    if request.method == 'GET':
-        items = list(WardrobeItem.objects.values('id', 'name', 'color', 'fabric', 'occasion', 'season', 'category'))
-        return JsonResponse({'items': items})
-    return JsonResponse({'error': 'Invalid method'}, status=405)
+    data = {
+        "name": "Pramod",
+        "email": "pramod@example.com"
+    }
 
-@csrf_exempt
-def wardrobe_delete_api(request, item_id):
-    if request.method == 'DELETE':
-        WardrobeItem.objects.filter(id=item_id).delete()
-        return JsonResponse({'status': 'deleted'})
-    return JsonResponse({'error': 'DELETE required'}, status=405)
+    return JsonResponse(data)
 
-@csrf_exempt
-def recommend_outfits_api(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        try:
-            from .ai_engine import recommend_from_wardrobe
-            result = recommend_from_wardrobe(
-                age=int(data.get('age', 25)),
-                gender=data.get('gender', 'Female'),
-                hydration=data.get('hydration', 'Medium'),
-                oil=data.get('oil', 'Medium'),
-                sensitivity=data.get('sensitivity', 'Low'),
-                humidity=float(data.get('humidity', 50)),
-                temperature=float(data.get('temperature', 25)),
-                occasion=data.get('occasion', None),
-                season=data.get('season', None),
-                top_n=5
-            )
-            return JsonResponse(result)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-    return JsonResponse({'error': 'POST required'}, status=405)
 
-@csrf_exempt
+# WEATHER API
 def weather_api(request):
-    location = request.GET.get('location', '').strip()
-    if not location:
-        return JsonResponse({'error': 'Location is required'}, status=400)
-    api_key = settings.WEATHER_API_KEY
-    base = 'https://api.openweathermap.org/data/2.5/weather'
-    url = base + '?q=' + location + '&appid=' + api_key + '&units=metric'
-    try:
-        res = requests.get(url, timeout=5)
-        data = res.json()
-        if data.get('cod') != 200:
-            return JsonResponse({'error': 'City not found'}, status=404)
-        weather = {
-            'location': data['name'] + ', ' + data['sys']['country'],
-            'temperature': round(data['main']['temp']),
-            'feels_like': round(data['main']['feels_like']),
-            'condition': data['weather'][0]['main'],
-            'description': data['weather'][0]['description'].title(),
-            'humidity': data['main']['humidity'],
-            'wind_speed': round(data['wind']['speed'] * 3.6, 1),
-            'icon': data['weather'][0]['icon'],
-        }
-        p, _ = Profile.objects.get_or_create(id=1)
-        from .models import WeatherLog
-        WeatherLog.objects.create(
-            profile=p,
-            location=weather['location'],
-            temperature=weather['temperature'],
-            condition=weather['condition'],
-            humidity=weather['humidity'],
-            wind_speed=weather['wind_speed'],
-        )
-        return JsonResponse(weather)
-    except requests.exceptions.Timeout:
-        return JsonResponse({'error': 'Weather service timeout'}, status=503)
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
 
-@csrf_exempt
+    data = {
+        "temperature": "28°C",
+        "condition": "Cloudy"
+    }
+
+    return JsonResponse(data)
+
+
+# SAVE OUTFIT API
 def save_outfit_api(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        p, _ = Profile.objects.get_or_create(id=1)
-        from .models import OutfitHistory
-        OutfitHistory.objects.create(
-            profile=p,
-            occasion=data.get('occasion', ''),
-            profession=data.get('profession', ''),
-            mood=data.get('mood', ''),
-            colors_used=data.get('colors_used', ''),
-            outfit_json=json.dumps(data.get('outfits', [])),
-            location=data.get('location', ''),
-            temperature=data.get('temperature'),
-            condition=data.get('condition', ''),
-        )
-        return JsonResponse({'status': 'saved'})
-    return JsonResponse({'error': 'POST required'}, status=405)
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
+
+    data = {
+        "status": "saved"
+    }
+
+    return JsonResponse(data)
+
+
+# WARDROBE API
+def wardrobe_api(request):
+
+    data = {
+        "items": []
+    }
+
+    return JsonResponse(data)
+
+
+# DELETE WARDROBE ITEM API
+def wardrobe_delete_api(request, item_id):
+
+    data = {
+        "deleted_item_id": item_id
+    }
+
+    return JsonResponse(data)
+
+
+# RECOMMEND OUTFITS API
+def recommend_outfits_api(request):
+
+    data = {
+        "recommendations": [
+            "Casual Shirt + Jeans",
+            "Formal Blazer + Pants"
+        ]
+    }
+
+    return JsonResponse(data)

@@ -1,5 +1,4 @@
 from django.urls import path
-<<<<<<< HEAD
 from .views import profile_page
 from . import views
 
@@ -9,11 +8,10 @@ urlpatterns = [
     path('tryon/', views.tryon, name='tryon'),
     path('feedback/', views.feedback, name='feedback'),
     path('wardrobe/', views.wardrobe, name='wardrobe'),
-
+]
     # AI Outfit Generator
-    path('generate-outfit/', views.generate_outfit, name='generate_outfit'),
+path('generate-outfit/', views.generate_outfit, name='generate_outfit'),
 
-=======
 from . import views
 
 urlpatterns = [
@@ -29,5 +27,4 @@ urlpatterns = [
     path('api/wardrobe/',           views.wardrobe_api,         name='wardrobe_api'),
     path('api/wardrobe/<int:item_id>/delete/', views.wardrobe_delete_api, name='wardrobe_delete'),
     path('recommend/',              views.recommend_outfits_api,name='recommend'),
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
 ]
