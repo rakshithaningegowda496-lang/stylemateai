@@ -1,57 +1,39 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import UserProfile
-from .utils import detect_skin_tone, detect_body_type
+from django.shortcuts import render
 
+GENDER_CHOICES = ['Female', 'Male', 'Non-binary', 'Prefer Not To Say']
 
-# Main Profile Page
 def profile_page(request):
-    return render(request, "profile.html")
+    step = int(request.POST.get('step', request.GET.get('step', 1)))
+    context = {
+        'step': step,
+        'name': request.POST.get('full_name', request.session.get('full_name', '')),
+        'age': request.POST.get('age', request.session.get('age', '23')),
+        'gender_identity': request.POST.get('gender_identity', request.session.get('gender_identity', 'Prefer Not To Say')),
+        'skin_tone': request.POST.get('skin_tone', request.session.get('skin_tone', 'Fair')),
+        'body_type': request.POST.get('body_type', request.session.get('body_type', 'Slim')),
+        'skin_type': request.POST.get('skin_type', request.session.get('skin_type', 'Normal')),
+        'gender': request.POST.get('gender', request.session.get('gender', 'Female')),
+        'gender_choices': GENDER_CHOICES,
+    }
 
+    if request.method == 'POST':
+        for key in ['full_name', 'age', 'gender_identity', 'skin_tone', 'body_type', 'skin_type', 'gender']:
+            value = request.POST.get(key)
+            if value is not None:
+                request.session[key] = value
 
-# Save Profile + Analyze Image
-from django.views.decorators.csrf import csrf_exempt
+        if request.POST.get('action') == 'continue':
+            context['step'] = 2
+        elif request.POST.get('action') == 'back':
+            context['step'] = 1
+        elif request.POST.get('action') == 'finish':
+            context['step'] = 2
+            context['saved'] = True
 
-@csrf_exempt
-def save_profile(request):
+    return render(request, 'profile.html', context)
 
-    if request.method == "POST":
-
-        name = request.POST.get("name")
-
-        gender = request.POST.get("gender")
-
-        age = request.POST.get("age")
-
-        height = float(request.POST.get("height"))
-
-        image = request.FILES.get("image")
-
-        profile = UserProfile.objects.create(
-            name=name,
-            gender=gender,
-            age=age,
-            height=height,
-            image=image
-        )
-
-        image_path = profile.image.path
-
-        skin_tone = detect_skin_tone(image_path)
-
-        body_type = detect_body_type(height)
-
-        profile.skin_tone = skin_tone
-
-        profile.body_type = body_type
-
-        profile.save()
-
-        return JsonResponse({
-            "status":"success",
-            "skin_tone":skin_tone,
-            "body_type":body_type
-        })
 
 # Styling Page
 def styling_page(request):

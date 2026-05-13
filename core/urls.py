@@ -1,15 +1,9 @@
 from django.urls import path
+from .views import profile_page
 from . import views
 
 urlpatterns = [
-
-    # Home / Welcome Page
-    path('', views.profile_page, name='profile'),
-
-    # Save Profile
-    path('save-profile/', views.save_profile, name='save_profile'),
-
-    # Other Pages
+    path('', profile_page, name='profile'),
     path('styling/', views.styling_page, name='styling'),
     path('tryon/', views.tryon, name='tryon'),
     path('feedback/', views.feedback, name='feedback'),
