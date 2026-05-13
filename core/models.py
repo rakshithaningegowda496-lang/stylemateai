@@ -1,6 +1,5 @@
 from django.db import models
 
-<<<<<<< HEAD
 class UserProfile(models.Model):
     GENDER_CHOICES = [
         ('Male', 'Male'),
@@ -28,7 +27,6 @@ class Outfit(models.Model):
     occasion = models.CharField(max_length=50)
     mood = models.CharField(max_length=50)
     recommendation = models.TextField()
-=======
 class Profile(models.Model):
     name      = models.CharField(max_length=100, default="User")
     skin_tone = models.CharField(max_length=50)
@@ -51,7 +49,7 @@ class Outfit(models.Model):
     mood           = models.CharField(max_length=50)
     recommendation = models.TextField()
 
-# ── NEW: User's own wardrobe items ──────────────
+
 class WardrobeItem(models.Model):
     profile    = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name       = models.CharField(max_length=200)
@@ -85,4 +83,4 @@ class OutfitHistory(models.Model):
     temperature = models.FloatField(null=True)
     condition   = models.CharField(max_length=100, blank=True)
     created_at  = models.DateTimeField(auto_now_add=True)
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
+

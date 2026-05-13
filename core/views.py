@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.shortcuts import render
-=======
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -13,8 +11,6 @@ import requests
 
 def home(request):
     return render(request, 'home.html')
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
-
 GENDER_CHOICES = ['Female', 'Male', 'Non-binary', 'Prefer Not To Say']
 
 def profile_page(request):
@@ -50,11 +46,8 @@ def profile_page(request):
 
 # Styling Page
 def styling_page(request):
-<<<<<<< HEAD
     return render(request, "styling.html")
-=======
     return render(request, 'styling.html')
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
 
 
 # Try On Page
@@ -64,7 +57,6 @@ def tryon(request):
 def feedback(request):
     return render(request, 'feedback.html')
 
-<<<<<<< HEAD
 # Feedback Page
 def feedback(request):
     return render(request, "feedback.html")
@@ -105,7 +97,6 @@ def generate_outfit(request):
     return JsonResponse({
         "outfit": "Casual Jeans + White Shirt"
     })
-=======
 def profile(request):
     if request.method == 'POST':
         UserProfile.objects.create(
@@ -243,4 +234,4 @@ def save_outfit_api(request):
         )
         return JsonResponse({'status': 'saved'})
     return JsonResponse({'error': 'POST required'}, status=405)
->>>>>>> 0c4f3e71e2044ea512b66d2ea24fa58fb909cb51
+
