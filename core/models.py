@@ -49,7 +49,7 @@ class Outfit(models.Model):
     mood           = models.CharField(max_length=50)
     recommendation = models.TextField()
 
-# ── NEW: User's own wardrobe items ──────────────
+
 class WardrobeItem(models.Model):
     profile    = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name       = models.CharField(max_length=200)
@@ -84,6 +84,7 @@ class OutfitHistory(models.Model):
     condition   = models.CharField(max_length=100, blank=True)
     created_at  = models.DateTimeField(auto_now_add=True)
 
+<<<<<<< HEAD
 from django.db import models
 
 
@@ -106,3 +107,5 @@ class WardrobeItem(models.Model):
 
     def __str__(self):
         return self.item_name
+=======
+>>>>>>> e3f31d3a65a145681ecf7b69a486148cd49f9ca2
