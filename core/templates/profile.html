@@ -50,7 +50,7 @@
       </div>
       <div class="step {% if step == 2 %}current{% endif %}">
         <div class="bubble {% if step == 2 %}current-bubble{% endif %}">
-          2
+          
         </div>
         <div class="label">Analysis</div>
       </div>
@@ -66,7 +66,7 @@
 
         <input type="hidden" name="step" value="{{ step }}">
 
-        <div class="panel {% if step != 1 %}hidden{% endif %}" id="step1">
+        <div class="panel hidden" id="step1">
           <label class="field full">
             <span>Full Name</span>
             <input type="text" name="full_name" placeholder="Your name" value="{{ name }}">
@@ -91,7 +91,7 @@
           <button class="primary" type="submit" name="action" value="continue">Continue to Analysis <span>›</span></button>
         </div>
 
-        <div class="panel {% if step != 2 %}hidden{% endif %}" id="step2">
+        <div class="panel" id="step2">
           
 <div class="upload-grid">
     <label class="dropbox clickable" for="cameraInput">
