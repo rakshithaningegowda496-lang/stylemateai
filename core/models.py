@@ -83,3 +83,26 @@ class OutfitHistory(models.Model):
     temperature = models.FloatField(null=True)
     condition   = models.CharField(max_length=100, blank=True)
     created_at  = models.DateTimeField(auto_now_add=True)
+
+from django.db import models
+
+
+class WardrobeItem(models.Model):
+
+    item_name = models.CharField(max_length=100)
+
+    category = models.CharField(max_length=50)
+
+    style_type = models.CharField(max_length=50)
+
+    color = models.CharField(max_length=50)
+
+    image = models.CharField(max_length=255)
+
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'wardrobe_items'
+
+    def __str__(self):
+        return self.item_name
