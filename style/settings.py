@@ -73,11 +73,14 @@ WSGI_APPLICATION = 'style.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'stylemate_ai',
+        'USER': 'root',
+        'PASSWORD': 'Prachi@194',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -123,3 +126,5 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'profileapp' / 'static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

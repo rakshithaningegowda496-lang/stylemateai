@@ -8,10 +8,14 @@ urlpatterns = [
     path('tryon/', views.tryon, name='tryon'),
     path('feedback/', views.feedback, name='feedback'),
     path('wardrobe/', views.wardrobe, name='wardrobe'),
-
+]
     # AI Outfit Generator
+<<<<<<< HEAD
+path('generate-outfit/', views.generate_outfit, name='generate_outfit'),
+=======
     path('generate-outfit/', views.generate_outfit, name='generate_outfit'),
 ]
+>>>>>>> e3f31d3a65a145681ecf7b69a486148cd49f9ca2
 
 from . import views
 

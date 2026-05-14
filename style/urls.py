@@ -37,4 +37,7 @@ urlpatterns = [
     path('',views.home, name='home'),
     path('', include('core.urls')),
 ]
+<<<<<<< HEAD
+=======
 
+>>>>>>> e3f31d3a65a145681ecf7b69a486148cd49f9ca2
