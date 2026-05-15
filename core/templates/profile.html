@@ -21,11 +21,10 @@
     <nav class="nav">
       <a href="#">Home</a>
       <a class="active" href="#">Profile</a>
-      <a href="#">Wardrobe</a>
-      <a href="#">Styling</a>
-      <a href="#">Try-On</a>
-      <a href="#">Feedback</a>
-      <a href="#">Professions</a>
+      <li><a href="{% url 'wardrobe' %}" class="link"><h3>Wardrobe</a></li>
+      <li><a href="{% url 'styling' %}" class="link"><h3>styling</a></li>
+      <li><a href="{% url 'feedback' %}" class="link"><h3>Feedback</a></li>
+      
     </nav>
 
     <button class="icon-btn" aria-label="Toggle theme">☾</button>

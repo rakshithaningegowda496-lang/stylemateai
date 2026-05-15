@@ -29,15 +29,3 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT
     )
-
-from core import views
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',views.home, name='home'),
-    path('', include('core.urls')),
-]
-<<<<<<< HEAD
-=======
-
->>>>>>> e3f31d3a65a145681ecf7b69a486148cd49f9ca2

@@ -1,68 +1,49 @@
+import os, uuid
 from django.db import models
 
-class UserProfile(models.Model):
-    GENDER_CHOICES = [
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-        ('Other', 'Other'),
-    ]
 
-    name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES)
-    age = models.IntegerField()
-    height = models.FloatField()
-
-    image = models.ImageField(upload_to='profiles/')
-
-    body_type = models.CharField(max_length=50, blank=True)
-    skin_tone = models.CharField(max_length=50, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
+def wardrobe_upload_path(instance, filename):
+    ext  = os.path.splitext(filename)[1].lower()
+    name = f"{uuid.uuid4().hex}{ext}"
+    return f"wardrobe/{instance.category}/user_1/{name}"
 
 
-class Outfit(models.Model):
-    occasion = models.CharField(max_length=50)
-    mood = models.CharField(max_length=50)
-    recommendation = models.TextField()
 class Profile(models.Model):
     name      = models.CharField(max_length=100, default="User")
     skin_tone = models.CharField(max_length=50)
     skin_type = models.CharField(max_length=50)
     body_type = models.CharField(max_length=50)
     gender    = models.CharField(max_length=50)
-    location = models.CharField(max_length=200, blank=True, null=True)
+    location  = models.CharField(max_length=200, blank=True, null=True)
+
 
 class UserProfile(models.Model):
     skin_tone = models.CharField(max_length=50)
     skin_type = models.CharField(max_length=50)
     body_type = models.CharField(max_length=50)
     gender    = models.CharField(max_length=50)
-    location = models.CharField(max_length=200, blank=True, null=True)
-    
+    location  = models.CharField(max_length=200, blank=True, null=True)
+
     def __str__(self):
         return self.gender
 
-class Outfit(models.Model):
-    occasion       = models.CharField(max_length=50)
-    mood           = models.CharField(max_length=50)
-    recommendation = models.TextField()
-
 
 class WardrobeItem(models.Model):
-    profile    = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     name       = models.CharField(max_length=200)
-    color      = models.CharField(max_length=100)
-    fabric     = models.CharField(max_length=100)
-    occasion   = models.CharField(max_length=100)
-    season     = models.CharField(max_length=50)
     category   = models.CharField(max_length=100)
+    style_type = models.CharField(max_length=50, default='casual')
+    color_name = models.CharField(max_length=60, default='')
+    color_hex  = models.CharField(max_length=7,  default='#000000')
+    image      = models.ImageField(upload_to=wardrobe_upload_path, null=True, blank=True)
+    color      = models.CharField(max_length=100, default='')
+    fabric     = models.CharField(max_length=100, default='')
+    occasion   = models.CharField(max_length=100, default='')
+    season     = models.CharField(max_length=50,  default='')
     added_on   = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.name} ({self.color})"
+        return f"{self.name} ({self.category})"
+
 
 class WeatherLog(models.Model):
     profile     = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -72,6 +53,7 @@ class WeatherLog(models.Model):
     humidity    = models.FloatField()
     wind_speed  = models.FloatField()
     logged_at   = models.DateTimeField(auto_now_add=True)
+
 
 class OutfitHistory(models.Model):
     profile     = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -84,29 +66,14 @@ class OutfitHistory(models.Model):
     temperature = models.FloatField(null=True)
     condition   = models.CharField(max_length=100, blank=True)
     created_at  = models.DateTimeField(auto_now_add=True)
-
-<<<<<<< HEAD
-from django.db import models
-
-
-class WardrobeItem(models.Model):
-
-    item_name = models.CharField(max_length=100)
-
-    category = models.CharField(max_length=50)
-
-    style_type = models.CharField(max_length=50)
-
-    color = models.CharField(max_length=50)
-
-    image = models.CharField(max_length=255)
-
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'wardrobe_items'
-
-    def __str__(self):
-        return self.item_name
-=======
->>>>>>> e3f31d3a65a145681ecf7b69a486148cd49f9ca2
+def wardrobe_upload_path(instance, filename):
+    import os, uuid
+    ext  = os.path.splitext(filename)[1].lower()
+    name = f"{uuid.uuid4().hex}{ext}"
+    folder = f"wardrobe/{instance.category}/user_1"
+    
+    # Create folder if it doesn't exist
+    full_folder = os.path.join(settings.MEDIA_ROOT, folder)
+    os.makedirs(full_folder, exist_ok=True)
+    
+    return f"{folder}/{name}"
