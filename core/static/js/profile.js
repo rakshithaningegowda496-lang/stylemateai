@@ -64,30 +64,3 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
 });
-document.addEventListener("DOMContentLoaded", function(){
-
-    const continueBtn = document.querySelector('button[value="continue"]');
-    const backBtn = document.querySelector('button[value="back"]');
-
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-
-    if(continueBtn){
-        continueBtn.addEventListener("click", function(e){
-            e.preventDefault();
-
-            step1.classList.add("hidden");
-            step2.classList.remove("hidden");
-        });
-    }
-
-    if(backBtn){
-        backBtn.addEventListener("click", function(e){
-            e.preventDefault();
-
-            step2.classList.add("hidden");
-            step1.classList.remove("hidden");
-        });
-    }
-
-});

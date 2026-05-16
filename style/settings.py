@@ -76,9 +76,9 @@ WSGI_APPLICATION = 'style.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stylemate_ai',
+        'NAME': 'style',
         'USER': 'root',
-        'PASSWORD': 'Prachi@194',
+        'PASSWORD': 'Data@496',
         'HOST': 'localhost',
         'PORT': '3306',
     }
