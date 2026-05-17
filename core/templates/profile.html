@@ -21,38 +21,19 @@
     <nav class="nav">
       <a href="#">Home</a>
       <a class="active" href="#">Profile</a>
-      <li><a href="{% url 'wardrobe' %}" class="link"><h3>Wardrobe</a></li>
-      <li><a href="{% url 'styling' %}" class="link"><h3>styling</a></li>
-      <li><a href="{% url 'feedback' %}" class="link"><h3>Feedback</a></li>
-      
+      <li><a href="{% url 'wardrobe' %}" class="link"><h3>Wardrobe</h3></a></li>
+      <li><a href="{% url 'styling' %}" class="link"><h3>Styling</h3></a></li>
+      <li><a href="{% url 'feedback' %}" class="link"><h3>Feedback</h3></a></li>
     </nav>
 
     <button class="icon-btn" aria-label="Toggle theme">☾</button>
   </header>
 
   <main class="page">
+
     <section class="hero">
       <h1>Your Style Profile</h1>
-      {% if step == 1 %}
-        <p>Tell us the basics to help our AI understand your style context.</p>
-      {% else %}
-        <p>Snap a photo or upload one. Our AI will analyze your features automatically.</p>
-      {% endif %}
-    </section>
-
-    <section class="steps">
-      <div class="step {% if step >= 1 %}current{% endif %}">
-        <div class="bubble {% if step > 1 %}done{% endif %}">
-          {% if step > 1 %}✓{% else %}1{% endif %}
-        </div>
-        <div class="label">Basics</div>
-      </div>
-      <div class="step {% if step == 2 %}current{% endif %}">
-        <div class="bubble {% if step == 2 %}current-bubble{% endif %}">
-          
-        </div>
-        <div class="label">Analysis</div>
-      </div>
+      <p>Fill your details and upload your image for AI style analysis.</p>
     </section>
 
     <section class="card">
@@ -60,84 +41,77 @@
         <div class="success">Saved successfully.</div>
       {% endif %}
 
-      <form method="post" class="form">
+      <form method="post" class="form" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <input type="hidden" name="step" value="{{ step }}">
-
-        <div class="panel hidden" id="step1">
-          <label class="field full">
+        <!-- BASIC DETAILS -->
+        <div class="grid-2">
+          <label class="field">
             <span>Full Name</span>
             <input type="text" name="full_name" placeholder="Your name" value="{{ name }}">
           </label>
 
-          <div class="grid-2">
-            <label class="field">
-              <span>Age</span>
-              <input type="text" name="age" value="{{ age }}">
-            </label>
+          <label class="field">
+            <span>Age</span>
+            <input type="text" name="age" value="{{ age }}">
+          </label>
 
-            <label class="field">
-              <span>Gender Identity</span>
-              <select name="gender_identity">
-                {% for option in gender_choices %}
-                  <option value="{{ option }}" {% if gender_identity == option %}selected{% endif %}>{{ option }}</option>
-                {% endfor %}
-              </select>
-            </label>
-          </div>
-
-          <button class="primary" type="submit" name="action" value="continue">Continue to Analysis <span>›</span></button>
-        </div>
-
-        <div class="panel" id="step2">
           
-<div class="upload-grid">
-    <label class="dropbox clickable" for="cameraInput">
-        <div class="drop-icon">📹</div>
-        <div class="drop-title">CAMERA</div>
-        <input type="file" accept="image/*" capture="user" id="cameraInput" hidden>
-    </label>
-
-    <label class="dropbox clickable" for="uploadInput">
-        <div class="drop-icon">📷</div>
-        <div class="drop-title">UPLOAD</div>
-        <input type="file" accept="image/*" id="uploadInput" hidden>
-    </label>
-</div>
-
-<div class="preview-wrapper hidden" id="previewWrapper">
-    <img id="previewImage" class="preview-image" src="" alt="Preview">
-</div>
-
-
-          <div class="grid-2 info-grid">
-            <label class="field">
-              <span>Skin Tone</span>
-              <input type="text" name="skin_tone" value="{{ skin_tone }}">
-            </label>
-            <label class="field">
-              <span>Body Type</span>
-              <input type="text" name="body_type" value="{{ body_type }}">
-            </label>
-            <label class="field">
-              <span>Skin Type</span>
-              <input type="text" name="skin_type" value="{{ skin_type }}">
-            </label>
-            <label class="field">
-              <span>Gender</span>
-              <input type="text" name="gender" value="{{ gender }}">
-            </label>
-          </div>
-
-          <button class="primary save" type="submit" name="action" value="finish">✓ Save &amp; Finish Setup</button>
-
-          <hr class="divider">
-
-          <button class="back" type="submit" name="action" value="back">Back</button>
         </div>
+
+        <!-- IMAGE UPLOAD -->
+        <div class="upload-grid">
+          <label class="dropbox clickable" for="cameraInput">
+            <div class="drop-icon">📹</div>
+            <div class="drop-title">CAMERA</div>
+            <input type="file" accept="image/*" capture="user" id="cameraInput" hidden>
+          </label>
+
+          <label class="dropbox clickable" for="uploadInput">
+            <div class="drop-icon">📷</div>
+            <div class="drop-title">UPLOAD</div>
+            <input type="file" accept="image/*" id="uploadInput" hidden>
+          </label>
+        </div>
+
+        <!-- IMAGE PREVIEW -->
+        <div class="preview-wrapper hidden" id="previewWrapper">
+          <img id="previewImage" class="preview-image" src="" alt="Preview">
+        </div>
+
+        <!-- ANALYSIS DETAILS -->
+        <div class="grid-2 info-grid">
+
+          <label class="field">
+            <span>Skin Tone</span>
+            <input type="text" name="skin_tone" value="{{ skin_tone }}">
+          </label>
+
+          <label class="field">
+            <span>Body Type</span>
+            <input type="text" name="body_type" value="{{ body_type }}">
+          </label>
+
+          <label class="field">
+            <span>Skin Type</span>
+            <input type="text" name="skin_type" value="{{ skin_type }}">
+          </label>
+
+          <label class="field">
+            <span>Gender</span>
+            <input type="text" name="gender" value="{{ gender }}">
+          </label>
+
+        </div>
+
+        <!-- SAVE BUTTON -->
+        <button class="primary save" type="submit" name="action" value="finish">
+          ✓ Save &amp; Finish Setup
+        </button>
+
       </form>
     </section>
+
   </main>
 
   <script src="{% static 'js/profile.js' %}"></script>

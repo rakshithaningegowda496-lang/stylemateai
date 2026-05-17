@@ -1,147 +1,164 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import JsonResponse
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from .models import Profile, UserProfile, WardrobeItem
+from .models import UserProfile, WardrobeItem
 import json
 import requests
 
 
 def home(request):
     return render(request, 'home.html')
-
-
-def profile_page(request):
-    step = 1
-    if request.method == "POST":
-        action = request.POST.get("action")
-        if action == "continue":
-            step = 2
-        elif action == "back":
-            step = 1
-    return render(request, 'profile.html', {"step": step})
-
+GENDER_CHOICES = ['Female', 'Male', 'Non-binary', 'Prefer Not To Say']
 
 def profile(request):
-    if request.method == 'POST':
+
+    if request.method == "POST":
+
+        full_name = request.POST.get("full_name")
+        age = request.POST.get("age")
+        
+        skin_tone = request.POST.get("skin_tone")
+        body_type = request.POST.get("body_type")
+        skin_type = request.POST.get("skin_type")
+        gender = request.POST.get("gender")
+
+        # SAVE INTO MYSQL DATABASE
         UserProfile.objects.create(
-            skin_tone=request.POST.get('skin_tone'),
-            skin_type=request.POST.get('skin_type'),
-            body_type=request.POST.get('body_type'),
-            gender=request.POST.get('gender'),
-            location=request.POST.get('location'),
+            full_name=full_name,
+            age=age,
+            gender_identity=gender_identity,
+            skin_tone=skin_tone,
+            body_type=body_type,
+            skin_type=skin_type,
+            gender=gender,
         )
-        return redirect('tryon')
-    return render(request, 'profile.html')
 
+        return render(request, "profile.html", {
+            "saved": True
+        })
 
+    return render(request, "profile.html")
+            
+# Styling Page
 def styling_page(request):
+    return render(request, "styling.html")
     return render(request, 'styling.html')
 
 
+# Try On Page
 def tryon(request):
-    return render(request, 'tryon.html')
-
+    return render(request, "tryon.html")
 
 def feedback(request):
     return render(request, 'feedback.html')
+
+# Feedback Page
+def feedback(request):
+    return render(request, "feedback.html")
+
+
+# Wardrobe Page
+def wardrobe(request):
+    return render(request, "wardrobe.html")
+
+
+# API - Profile
+def profile_api(request):
+
+    return JsonResponse({
+        "message": "Profile API working"
+    })
+
+
+# API - Weather
+def weather_api(request):
+
+    return JsonResponse({
+        "weather": "Sunny"
+    })
+
+
+# API - Save Outfit
+def save_outfit_api(request):
+
+    return JsonResponse({
+        "status": "saved"
+    })
+
+
+# AI Outfit Generator
+def generate_outfit(request):
+
+    return JsonResponse({
+        "outfit": "Casual Jeans + White Shirt"
+    })
+def profile(request):
+
+    if request.method == "POST":
+
+        UserProfile.objects.create(
+            full_name=request.POST.get('full_name'),
+            age=request.POST.get('age'),
+            skin_tone=request.POST.get('skin_tone'),
+            body_type=request.POST.get('body_type'),
+            skin_type=request.POST.get('skin_type'),
+            gender=request.POST.get('gender'),
+        )
+
+        return render(request, 'profile.html', {
+            'saved': True
+        })
+
+    return render(request, 'profile.html')
 
 
 def wardrobe(request):
     items = WardrobeItem.objects.all()
     return render(request, 'wardrobe.html', {'items': items})
 
-
-def generate_outfit(request):
-    return JsonResponse({"status": "success", "outfit": "Casual Jeans + White Shirt"})
-
-
 @csrf_exempt
 def profile_api(request):
     p, _ = Profile.objects.get_or_create(id=1)
     if request.method == 'GET':
-        return JsonResponse({
-            'name': p.name,
-            'skin_tone': p.skin_tone,
-            'skin_type': p.skin_type,
-            'body_type': p.body_type,
-            'gender': p.gender,
-            'location': p.location
-        })
+        return JsonResponse({'name': p.name, 'skin_tone': p.skin_tone, 'skin_type': p.skin_type, 'body_type': p.body_type, 'gender': p.gender, 'location': p.location})
     if request.method == 'POST':
         data = json.loads(request.body)
         p.skin_tone = data.get('skin_tone')
         p.skin_type = data.get('skin_type')
         p.body_type = data.get('body_type')
-        p.gender    = data.get('gender')
-        p.location  = data.get('location')
+        p.gender = data.get('gender')
+        p.location = data.get('location')
         p.save()
         return JsonResponse({'status': 'saved'})
-
 
 @csrf_exempt
 def wardrobe_api(request):
     if request.method == 'POST':
-        try:
-            name       = request.POST.get('name', '').strip()
-            category   = request.POST.get('category', '').strip()
-            style_type = request.POST.get('style_type', '').strip()
-            color_name = request.POST.get('color_name', '').strip()
-            color_hex  = request.POST.get('color_hex', '#000000').strip()
-            image_file = request.FILES.get('image')
-
-            if not all([name, category, style_type, color_name, image_file]):
-                return JsonResponse({'success': False, 'error': 'All fields are required.'}, status=400)
-
-            item = WardrobeItem.objects.create(
-                name       = name,
-                category   = category,
-                style_type = style_type,
-                color_name = color_name,
-                color_hex  = color_hex,
-                image      = image_file,
-            )
-
-            return JsonResponse({
-                'success': True,
-                'item': {
-                    'id':         item.id,
-                    'name':       item.name,
-                    'category':   item.category,
-                    'style_type': item.style_type,
-                    'color_name': item.color_name,
-                    'color_hex':  item.color_hex,
-                    'image_url':  item.image.url,
-                }
-            }, status=201)
-
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=500)
-
+        data = json.loads(request.body)
+        item = WardrobeItem.objects.create(
+            name=data.get('name'),
+            color=data.get('color'),
+            fabric=data.get('fabric'),
+            occasion=data.get('occasion'),
+            season=data.get('season'),
+            category=data.get('category'),
+        )
+        return JsonResponse({'status': 'added', 'id': item.id})
     if request.method == 'GET':
-        items = list(WardrobeItem.objects.values(
-            'id', 'name', 'category', 'style_type', 'color_name', 'color_hex'
-        ))
+        items = list(WardrobeItem.objects.values('id', 'name', 'color', 'fabric', 'occasion', 'season', 'category'))
         return JsonResponse({'items': items})
-
     return JsonResponse({'error': 'Invalid method'}, status=405)
-
 
 @csrf_exempt
 def wardrobe_delete_api(request, item_id):
     if request.method == 'DELETE':
-        try:
-            item = WardrobeItem.objects.get(id=item_id)
-            if item.image:
-                import os
-                if os.path.isfile(item.image.path):
-                    os.remove(item.image.path)
-            item.delete()
-            return JsonResponse({'success': True})
-        except WardrobeItem.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Item not found.'}, status=404)
+        WardrobeItem.objects.filter(id=item_id).delete()
+        return JsonResponse({'status': 'deleted'})
     return JsonResponse({'error': 'DELETE required'}, status=405)
-
 
 @csrf_exempt
 def recommend_outfits_api(request):
@@ -166,42 +183,44 @@ def recommend_outfits_api(request):
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'POST required'}, status=405)
 
-
 @csrf_exempt
 def weather_api(request):
     location = request.GET.get('location', '').strip()
     if not location:
         return JsonResponse({'error': 'Location is required'}, status=400)
     api_key = settings.WEATHER_API_KEY
-    url = f'https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}&units=metric'
+    base = 'https://api.openweathermap.org/data/2.5/weather'
+    url = base + '?q=' + location + '&appid=' + api_key + '&units=metric'
     try:
-        res  = requests.get(url, timeout=5)
+        res = requests.get(url, timeout=5)
         data = res.json()
         if data.get('cod') != 200:
             return JsonResponse({'error': 'City not found'}, status=404)
         weather = {
-            'location':    data['name'] + ', ' + data['sys']['country'],
+            'location': data['name'] + ', ' + data['sys']['country'],
             'temperature': round(data['main']['temp']),
-            'feels_like':  round(data['main']['feels_like']),
-            'condition':   data['weather'][0]['main'],
+            'feels_like': round(data['main']['feels_like']),
+            'condition': data['weather'][0]['main'],
             'description': data['weather'][0]['description'].title(),
-            'humidity':    data['main']['humidity'],
-            'wind_speed':  round(data['wind']['speed'] * 3.6, 1),
-            'icon':        data['weather'][0]['icon'],
+            'humidity': data['main']['humidity'],
+            'wind_speed': round(data['wind']['speed'] * 3.6, 1),
+            'icon': data['weather'][0]['icon'],
         }
         p, _ = Profile.objects.get_or_create(id=1)
         from .models import WeatherLog
         WeatherLog.objects.create(
-            profile=p, location=weather['location'],
-            temperature=weather['temperature'], condition=weather['condition'],
-            humidity=weather['humidity'], wind_speed=weather['wind_speed'],
+            profile=p,
+            location=weather['location'],
+            temperature=weather['temperature'],
+            condition=weather['condition'],
+            humidity=weather['humidity'],
+            wind_speed=weather['wind_speed'],
         )
         return JsonResponse(weather)
     except requests.exceptions.Timeout:
         return JsonResponse({'error': 'Weather service timeout'}, status=503)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
 
 @csrf_exempt
 def save_outfit_api(request):
@@ -222,3 +241,4 @@ def save_outfit_api(request):
         )
         return JsonResponse({'status': 'saved'})
     return JsonResponse({'error': 'POST required'}, status=405)
+

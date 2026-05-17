@@ -8,24 +8,17 @@ def wardrobe_upload_path(instance, filename):
     return f"wardrobe/{instance.category}/user_1/{name}"
 
 
-class Profile(models.Model):
-    name      = models.CharField(max_length=100, default="User")
-    skin_tone = models.CharField(max_length=50)
-    skin_type = models.CharField(max_length=50)
-    body_type = models.CharField(max_length=50)
-    gender    = models.CharField(max_length=50)
-    location  = models.CharField(max_length=200, blank=True, null=True)
-
-
 class UserProfile(models.Model):
-    skin_tone = models.CharField(max_length=50)
-    skin_type = models.CharField(max_length=50)
-    body_type = models.CharField(max_length=50)
-    gender    = models.CharField(max_length=50)
-    location  = models.CharField(max_length=200, blank=True, null=True)
+    full_name = models.CharField(max_length=100)
+    age = models.IntegerField(null=True, blank=True)
+
+    skin_tone = models.CharField(max_length=100)
+    body_type = models.CharField(max_length=100)
+    skin_type = models.CharField(max_length=100)
+    gender = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.gender
+        return self.full_name
 
 
 class WardrobeItem(models.Model):
@@ -46,7 +39,7 @@ class WardrobeItem(models.Model):
 
 
 class WeatherLog(models.Model):
-    profile     = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile     = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     location    = models.CharField(max_length=100)
     temperature = models.FloatField()
     condition   = models.CharField(max_length=100)
@@ -56,7 +49,7 @@ class WeatherLog(models.Model):
 
 
 class OutfitHistory(models.Model):
-    profile     = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile     = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     occasion    = models.CharField(max_length=100)
     profession  = models.CharField(max_length=100, blank=True)
     mood        = models.CharField(max_length=100)
