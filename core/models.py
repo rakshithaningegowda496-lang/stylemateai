@@ -1,5 +1,6 @@
 import os, uuid
 from django.db import models
+import uuid
 
 
 def wardrobe_upload_path(instance, filename):

@@ -130,6 +130,19 @@
     </button>
 
   </div>
+  {% if profile and profile.profile_image %}
+<div class="profile-status success">
+    ✅ Profile photo ready — Virtual Try-On available!
+</div>
+
+<img src="{{ profile.profile_image.url }}"
+     width="180"
+     style="border-radius:12px; margin-bottom:15px;">
+{% else %}
+<div class="profile-status error">
+    📸 No profile photo
+</div>
+{% endif %}
 
   <!-- ══════════════════════════════════════════ -->
   <!-- RIGHT — PREVIEW PANEL                     -->

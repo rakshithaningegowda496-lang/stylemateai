@@ -58,6 +58,15 @@
  
     <!-- CATEGORY SECTIONS -->
     <div class="wardrobe-container" id="wardrobeContainer">
+        {% for item in items %}
+    <div>
+        <h3>{{ item.item_name }}</h3>
+        <p>{{ item.category }}</p>
+        <p>{{ item.color }}</p>
+    </div>
+{% empty %}
+    <p>No items found</p>
+{% endfor %}
  
         <!-- Dynamic category sections injected by JS; static cards below for initial load -->
  
