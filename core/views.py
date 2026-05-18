@@ -43,9 +43,12 @@ def profile(request):
 
 
 def wardrobe(request):
-    items = WardrobeItem.objects.all()
-    return render(request, 'wardrobe.html', {'items': items})
+    items = WardrobeItem.objects.all().order_by('-id')
 
+    return render(request, "wardrobe.html", {
+        "items": items
+    })
+    
 def styling_page(request):
     profile = UserProfile.objects.first()
 

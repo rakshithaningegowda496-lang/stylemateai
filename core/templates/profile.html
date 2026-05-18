@@ -52,32 +52,18 @@
             value="{{ profile.full_name }}"
             placeholder="Your name">
           </label>
-          <input type="text" name="age"
-           value="{{ profile.age }}">
+          
           <label class="field">
             <span>Age</span>
-            
+            <input type="text" name="age"
+            value="{{ profile.age }}">
           </label>
 
           
         </div>
 
         <!-- IMAGE UPLOAD -->
-        <div class="upload-grid">
-  <label class="dropbox clickable" for="cameraInput">
-    <div class="drop-icon">📹</div>
-    <div class="drop-title">CAMERA</div>
-    <!-- ✅ ADD name="profile_image" -->
-    <input type="file" accept="image/*" capture="user" 
-           id="cameraInput" name="profile_image" hidden>
-  </label>
-
-  {% if profile.profile_image %}
-<div class="preview-wrapper">
-    <img src="{{ profile.profile_image.url }}"
-         class="preview-image">
-</div>
-{% endif %}
+        
 
 
   <label class="dropbox clickable" for="uploadInput">
