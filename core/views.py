@@ -5,6 +5,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from .models import WardrobeItem 
 from .models import UserProfile
+from django.conf import settings
+from groq import Groq
+
+# When creating the client in your views, use:
 
 # =========================
 # PAGE VIEWS
@@ -70,11 +74,17 @@ def feedback(request):
 # =========================
 
 def profile_api(request):
+    profile = UserProfile.objects.last()
+    if not profile:
+        return JsonResponse({"success": False, "error": "No profile found"}, status=404)
     return JsonResponse({
         "success": True,
-        "message": "Profile API working"
+        "skin_tone": profile.skin_tone,
+        "body_type": profile.body_type,
+        "gender": profile.gender,
+        "full_name": profile.full_name,
+        "has_profile_image": bool(profile.profile_image),
     })
-
 
 def weather_api(request):
     return JsonResponse({
@@ -240,16 +250,42 @@ def generate_outfit(request):
 @csrf_exempt
 def generate_tryon_api(request):
     if request.method != "POST":
-        return JsonResponse({"success": False, "error": "Method not allowed"}, status=405)
+        return JsonResponse({"error": "Method not allowed"}, status=405)
     try:
-        # Placeholder — integrate your try-on model/service here
-        return JsonResponse({
-            "success": True,
-            "message": "Try-on generation triggered (stub)"
-        })
-    except Exception as e:
-        return JsonResponse({"success": False, "error": str(e)}, status=500)
+        body = json.loads(request.body)
+        outfit_name        = body.get("outfit_name", "")
+        outfit_description = body.get("outfit_description", "")
+        outfit_pieces      = body.get("outfit_pieces", [])
 
+        profile = UserProfile.objects.last()
+        if not profile or not profile.profile_image:
+            return JsonResponse({"status": "error", "needs_photo": True})
+
+        prompt = f"""You are a fashion stylist. Analyse how this outfit would look on the user.
+
+Outfit: {outfit_name}
+Description: {outfit_description}
+Pieces: {', '.join(outfit_pieces)}
+
+User profile:
+- Skin tone: {profile.skin_tone}
+- Body type: {profile.body_type}
+- Gender: {profile.gender}"""
+
+        client = Groq(api_key=settings.GROQ_API_KEY)
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=600,
+        )
+        return JsonResponse({
+            "status": "success",
+            "result": response.choices[0].message.content,
+            "outfit": outfit_name,
+        })
+
+    except Exception as e:
+        return JsonResponse({"status": "error", "error": str(e)}, status=500)
 
 @csrf_exempt
 def upload_profile_image_api(request):
@@ -270,20 +306,85 @@ def upload_profile_image_api(request):
         return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 
+
+
 @csrf_exempt
 def generate_outfit_suggestions(request):
     if request.method != "POST":
-        return JsonResponse({"success": False, "error": "Method not allowed"}, status=405)
+        return JsonResponse({"error": "Method not allowed"}, status=405)
     try:
         body = json.loads(request.body)
-        style = body.get("style", "casual")
-        occasion = body.get("occasion", "")
+        occasion   = body.get("occasion", "casual")
+        mood       = body.get("mood", "relaxed")
+        colors     = body.get("colors", "neutral tones")
+        profession = body.get("profession", "")
+        prof_style = body.get("profStyle", "versatile")
 
-        # Placeholder — replace with AI suggestion logic
-        return JsonResponse({
-            "success": True,
-            "suggestions": [],
-            "message": f"Outfit suggestions for style='{style}', occasion='{occasion}' (stub)"
-        })
+        profile   = UserProfile.objects.last()
+        skin_tone = profile.skin_tone if profile else "medium"
+
+        wardrobe_items = WardrobeItem.objects.all()
+        wardrobe_text = "\n".join([
+            f"- {item.name} ({item.category}, {item.color_name}, {item.style_type})"
+            for item in wardrobe_items
+        ]) or "No wardrobe items yet."
+
+        prompt = f"""You are a fashion stylist. Return ONLY a JSON object, no other text.
+
+{{
+  "outfits": [
+    {{
+      "name": "Outfit name here",
+      "description": "Brief description here",
+      "pieces": ["piece 1", "piece 2", "piece 3"],
+      "colors": ["Color1", "Color2"]
+    }},
+    {{
+      "name": "Outfit name here",
+      "description": "Brief description here",
+      "pieces": ["piece 1", "piece 2", "piece 3"],
+      "colors": ["Color1", "Color2"]
+    }},
+    {{
+      "name": "Outfit name here",
+      "description": "Brief description here",
+      "pieces": ["piece 1", "piece 2", "piece 3"],
+      "colors": ["Color1", "Color2"]
+    }}
+  ]
+}}
+
+Suggest 3 outfits for:
+- Skin tone: {skin_tone}
+- Profession: {profession}
+- Occasion: {occasion}
+- Mood: {mood}
+- Colors: {colors}
+- Wardrobe items: {wardrobe_text}
+
+Remember: Return ONLY the JSON, nothing else."""
+
+        client = Groq(api_key=settings.GROQ_API_KEY)
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=1000,
+        )
+
+        raw = response.choices[0].message.content.strip()
+        print("GROQ RAW RESPONSE:", raw)
+
+        # Remove markdown code blocks if model adds them
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+        raw = raw.strip()
+
+        data = json.loads(raw)
+        return JsonResponse(data)
+
+    except json.JSONDecodeError as e:
+        return JsonResponse({"error": f"JSON parse error: {str(e)}"}, status=500)
     except Exception as e:
-        return JsonResponse({"success": False, "error": str(e)}, status=500)
+        return JsonResponse({"error": str(e)}, status=500)

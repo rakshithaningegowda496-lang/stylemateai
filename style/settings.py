@@ -78,7 +78,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'style',
         'USER': 'root',
-        'PASSWORD': 'Data@496',
+        'PASSWORD': 'Rakshitha1903',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -124,4 +124,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-ANTHROPIC_API_KEY = 'sk-ant-YOUR-KEY-HERE'
+GROQ_API_KEY = 'sk-1c9b8e5f-9a3c-4d0b-8c7e-2f1a2b3c4d5e'
