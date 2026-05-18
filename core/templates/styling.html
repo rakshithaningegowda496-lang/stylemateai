@@ -12,19 +12,18 @@
 
 <!-- NAV -->
 <nav>
-  <a href="home.html" class="nav-logo">
+  <a href="{% url 'home' %}" class="nav-logo">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
     </svg>
     StyleMate AI
   </a>
   <ul class="nav-links">
-    <li><a href="{% url 'home' %}" data-page="home">Home</a></li>
-    <li><a href="{% url 'profile' %}" data-page="profile">Profile</a></li>
-    
-    <li><a href="{% url 'wardrobe' %}" class="link"><h3>Wardrobe</a></li>
+    <li><a href="{% url 'home' %}"     data-page="home">Home</a></li>
+    <li><a href="{% url 'profile' %}"  data-page="profile">Profile</a></li>
+    <li><a href="{% url 'wardrobe' %}">Wardrobe</a></li>
     <li class="active">Styling</li>
-    <li><a href="{% url 'feedback' %}" class="link"><h3>Feedback</h3></a></li>
+    <li><a href="{% url 'feedback' %}">Feedback</a></li>
   </ul>
   <div class="nav-right">
     <button class="theme-btn" title="Toggle theme">🌙</button>
@@ -40,7 +39,9 @@
 <!-- MAIN -->
 <div class="main-layout">
 
-  <!-- FORM CARD -->
+  <!-- ══════════════════════════════════════════ -->
+  <!-- LEFT — FORM CARD                          -->
+  <!-- ══════════════════════════════════════════ -->
   <div class="form-card">
 
     <!-- Occasion -->
@@ -55,7 +56,7 @@
       </select>
     </div>
 
-    <!-- Profession (single-select pill buttons) -->
+    <!-- Profession -->
     <div>
       <div class="field-label">Profession</div>
       <div class="pill-group" id="profession-group">
@@ -83,33 +84,29 @@
       </select>
     </div>
 
-<!-- Color Preference (driven by profile skin tone) -->
-<div>
-  <div class="field-label">Color Preference</div>
-  <div class="color-pref-group">
-    <div class="color-pref-card active" id="ai-recommended" onclick="selectColorMode('ai')">
-      <div class="card-title">AI Recommended</div>
-      <div class="card-sub" id="ai-card-sub">Based on your skin tone</div>
+    <!-- Color Preference -->
+    <div>
+      <div class="field-label">Color Preference</div>
+      <div class="color-pref-group">
+        <div class="color-pref-card active" id="ai-recommended" onclick="selectColorMode('ai')">
+          <div class="card-title">AI Recommended</div>
+          <div class="card-sub" id="ai-card-sub">Based on your skin tone</div>
+        </div>
+        <div class="color-pref-card" id="custom-color" onclick="selectColorMode('custom')">
+          <div class="card-title">Custom</div>
+          <div class="card-sub">Your preference</div>
+        </div>
+      </div>
+      <div id="ai-color-section">
+        <div class="suggest-label" id="skin-tone-label">Suggested for your skin tone:</div>
+        <div class="color-tags" id="color-tags"></div>
+        <div class="color-select-hint">Tap colors to select/deselect · All selected by default</div>
+      </div>
+      <div id="custom-color-section" style="display:none;">
+        <input type="text" class="styled-select" id="custom-color-input"
+               placeholder="e.g. Pastel Pink, Royal Blue, Beige" />
+      </div>
     </div>
-    <div class="color-pref-card" id="custom-color" onclick="selectColorMode('custom')">
-      <div class="card-title">Custom</div>
-      <div class="card-sub">Your preference</div>
-    </div>
-  </div>
-
-  <!-- AI Recommended colors -->
-  <div id="ai-color-section">
-    <div class="suggest-label" id="skin-tone-label">Suggested for your skin tone:</div>
-    <div class="color-tags" id="color-tags"></div>
-    <div class="color-select-hint">Tap colors to select/deselect · All selected by default</div>
-  </div>
-
-  <!-- Custom color input -->
-  <div id="custom-color-section" style="display:none;">
-    <input type="text" class="styled-select" id="custom-color-input"
-           placeholder="e.g. Pastel Pink, Royal Blue, Beige" />
-  </div>
-</div>
 
     <!-- Weather Context -->
     <div>
@@ -134,118 +131,118 @@
 
   </div>
 
-  <!-- PREVIEW PANEL -->
-   <!-- PREVIEW PANEL -->
-<div class="preview-panel" id="preview-panel">
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RIGHT — PREVIEW PANEL                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="preview-panel" id="preview-panel">
 
-  <!-- Initial Placeholder -->
-  <div class="preview-placeholder" id="preview-placeholder">
-    
-    <div class="preview-icon">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
+    <!-- Profile photo status banner -->
+    <div id="profile-photo-status"
+         style="display:none; padding:10px 14px; border-radius:8px;
+                font-size:13px; margin-bottom:16px; border:1px solid #e8e0d5;
+                background:#faf9f7;">
     </div>
 
-    <h2>Ready to Style?</h2>
+    <!-- Placeholder -->
+    <div class="preview-placeholder" id="preview-placeholder">
+      <div class="preview-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h2>Ready to Style?</h2>
+      <p>Select your occasion, profession, and mood to see personalized outfit combinations.</p>
+    </div>
 
-    <p>
-      Select your occasion, profession, and mood to see personalized outfit combinations.
-    </p>
+    <!-- Spinner -->
+    <div class="spinner" id="spinner" style="display:none;"></div>
+
+    <!-- Outfit Grid -->
+    <div class="outfit-grid" id="outfit-grid" style="display:none;"></div>
+
+    <!-- ── TRY-ON SECTION ── -->
+    <div id="tryon-section" style="display:none; margin-top:24px;">
+
+      <hr style="border:none; border-top:1px solid #e8e0d5; margin:20px 0;">
+
+      <h2 style="font-size:18px; font-weight:600; margin-bottom:6px;">
+        Virtual Try-On
+      </h2>
+      <p style="font-size:13px; color:#888; margin-bottom:16px;">
+        Click below — your profile photo will be used automatically.
+      </p>
+
+      <!-- Try-On Button -->
+      <button class="generate-btn" id="tryon-btn" onclick="generateTryOn()">
+        👗 Generate Try-On
+      </button>
+
+      <!-- No-photo warning (shown if no profile image) -->
+      <div id="tryon-no-photo"
+           style="display:none; margin-top:12px; padding:12px 14px;
+                  background:#fef9f0; border:1px solid #f0d9a8;
+                  border-radius:8px; font-size:13px; color:#b8860b;">
+        📸 You haven't uploaded a profile photo yet.
+        <a href="{% url 'profile' %}" style="color:#b5a48a; font-weight:600;">
+          Go to Profile page →
+        </a>
+        to upload your photo, then come back here.
+      </div>
+
+      <!-- Spinner for try-on -->
+      <div id="tryon-spinner"
+           style="display:none; text-align:center; padding:20px; color:#888; font-size:14px;">
+        <div class="spinner"></div>
+        <p style="margin-top:10px;">Claude is analysing your style... ✨</p>
+      </div>
+
+      <!-- Try-On Result -->
+      <div id="tryon-result" style="display:none; margin-top:24px;">
+        <h3 style="font-size:16px; font-weight:600; margin-bottom:4px;">
+          ✨ Your Style Analysis
+        </h3>
+        <p id="tryon-outfit-label"
+           style="font-size:12px; color:#aaa; margin-bottom:12px;"></p>
+        <div id="tryon-text"
+             style="background:#faf9f7; border-radius:12px; padding:18px;
+                    font-size:14px; line-height:1.8; color:#333;
+                    white-space:pre-wrap; border:1px solid #e8e0d5;">
+        </div>
+        <button onclick="closeTryonResult()"
+                style="margin-top:12px; padding:8px 18px; background:transparent;
+                       border:1px solid #ccc; border-radius:8px; cursor:pointer;
+                       font-size:13px; color:#666;">
+          ✕ Close
+        </button>
+      </div>
+
+      <!-- Error -->
+      <div id="tryon-error"
+           style="display:none; margin-top:12px; padding:12px 14px;
+                  background:#fdf0f0; border-radius:8px;
+                  font-size:13px; color:#c0392b;">
+      </div>
+
+    </div>
+    <!-- end #tryon-section -->
 
   </div>
-
-  <!-- Spinner -->
-  <div class="spinner" id="spinner" style="display:none;"></div>
-
-  <!-- Outfit Grid -->
-  <div class="outfit-grid" id="outfit-grid" style="display:none;"></div>
-
-  <!-- TRY ON SECTION -->
-  <div class="tryon-section"
-       id="tryon-section"
-       style="margin-top:24px;">
-
-    <hr style="margin:20px 0;">
-
-    <h2 style="margin-bottom:10px;">
-      Virtual Try-On
-    </h2>
-
-    <p style="margin-bottom:16px; color:#777;">
-      Upload your image to preview the outfit on yourself.
-    </p>
-
-    <!-- Upload Image -->
-    <input type="file"
-           id="user-image"
-           accept="image/*"
-           style="
-             width:100%;
-             padding:12px;
-             border:1px solid #ddd;
-             border-radius:12px;
-             margin-bottom:16px;
-           ">
-
-    <!-- Preview Uploaded User Image -->
-    <div id="user-preview"
-         style="display:none; margin-bottom:20px;">
-
-      <h3 style="margin-bottom:10px;">
-        Your Uploaded Image
-      </h3>
-
-      <img id="user-preview-img"
-           src=""
-           alt="User Preview"
-           style="
-             width:220px;
-             border-radius:16px;
-             border:1px solid #ddd;
-           ">
-    </div>
-
-    <!-- Generate Try On -->
-    <button class="generate-btn"
-            onclick="generateTryOn()">
-
-      Generate Try-On
-
-    </button>
-
-    <!-- Final Result -->
-    <div id="tryon-result"
-         style="display:none; margin-top:24px;">
-
-      <h3 style="margin-bottom:12px;">
-        Try-On Result
-      </h3>
-
-      <img id="result-img"
-           src=""
-           alt="Try-On Result"
-           style="
-             width:300px;
-             border-radius:18px;
-             border:1px solid #ddd;
-           ">
-    </div>
-
-  </div>
+  <!-- end .preview-panel -->
 
 </div>
-  
-
-
+<!-- end .main-layout -->
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2">
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+      <path d="M2 17l10 5 10-5"/>
+      <path d="M2 12l10 5 10-5"/>
     </svg>
     StyleMate AI
   </div>
@@ -253,77 +250,21 @@
   <div class="footer-copy">© 2026 StyleMate AI. All rights reserved.</div>
 </footer>
 
-<script src="{% static 'js/main.js' %}">
-  // ───── SHOW TRY-ON SECTION ─────
-
-function showTryOnSection() {
-
-  document.getElementById("tryon-section").style.display = "block";
-
-}
-
-// ───── IMAGE PREVIEW ─────
-
-document.addEventListener("change", function(e) {
-
-  if (e.target.id === "user-image") {
-
-    const file = e.target.files[0];
-
-    if (file) {
-
-      const reader = new FileReader();
-
-      reader.onload = function(event) {
-
-        document.getElementById("user-preview").style.display = "block";
-
-        document.getElementById("user-preview-img").src =
-          event.target.result;
-
-      };
-
-      reader.readAsDataURL(file);
-
-    }
-
-  }
-
-});
-
-// ───── DEMO TRY-ON RESULT ─────
-
-function generateTryOn() {
-
-  const uploadedImage =
-    document.getElementById("user-preview-img").src;
-
-  if (!uploadedImage) {
-
-    alert("Please upload your image first.");
-
-    return;
-
-  }
-
-  document.getElementById("tryon-result").style.display = "block";
-
-  document.getElementById("result-img").src = uploadedImage;
-
-}
-</script>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
 <script>
-// ─── Skin tone → color palette map ───────────────────────────────────────────
+
+// ── Constants ────────────────────────────────────────────
 const SKIN_TONE_COLORS = {
-  "fair":       ["Soft Pink", "Lavender", "Powder Blue", "Mint", "Champagne"],
-  "light":      ["Peach", "Blush", "Sky Blue", "Sage", "Ivory"],
-  "medium":     ["Earth Tones", "Olive", "Gold", "Mustard", "Navy"],
-  "tan":        ["Terracotta", "Burnt Orange", "Coral", "Teal", "Warm Brown"],
-  "deep":       ["Jewel Tones", "Emerald", "Cobalt", "Plum", "Rich Red"],
-  "dark":       ["Bright White", "Electric Blue", "Fuchsia", "Orange", "Gold"],
+  "fair":       ["Soft Pink","Lavender","Powder Blue","Mint","Champagne"],
+  "light":      ["Peach","Blush","Sky Blue","Sage","Ivory"],
+  "medium":     ["Earth Tones","Olive","Gold","Mustard","Navy"],
+  "tan":        ["Terracotta","Burnt Orange","Coral","Teal","Warm Brown"],
+  "deep":       ["Jewel Tones","Emerald","Cobalt","Plum","Rich Red"],
+  "dark":       ["Bright White","Electric Blue","Fuchsia","Orange","Gold"],
 };
 
-// Profession → style descriptors used in prompt
 const PROFESSION_STYLE = {
   "Student":      "casual, youthful, comfortable, budget-friendly",
   "Professor":    "smart-casual, academic, polished, blazer-friendly",
@@ -335,22 +276,34 @@ const PROFESSION_STYLE = {
   "Athlete":      "sporty, performance-wear, athleisure, dynamic",
 };
 
-// Outfit emojis per occasion
 const OCCASION_EMOJI = {
-  casual: "👕", formal: "🤵", party: "🪩", office: "👔", date: "✨"
+  casual:"👕", formal:"🤵", party:"🪩", office:"👔", date:"✨"
 };
 
-let profileData = {};
+// ── State ─────────────────────────────────────────────────
+let profileData        = {};
 let selectedProfession = null;
-let colorMode = "ai"; // "ai" or "custom"
+let colorMode          = "ai";
+let currentOutfit      = null;   // ✅ stores selected outfit for try-on
+let hasProfilePhoto    = false;  // ✅ tracks if user has uploaded photo
 
-// ─── On page load: fetch profile ─────────────────────────────────────────────
+// ── CSRF helper ───────────────────────────────────────────
+function getCookie(name) {
+  const val   = `; ${document.cookie}`;
+  const parts = val.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return '';
+}
+
+// ── On page load ──────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const res = await fetch("/api/profile/");
     if (res.ok) {
-      profileData = await res.json();
+      profileData    = await res.json();
+      hasProfilePhoto = profileData.has_profile_image || false;
       applyProfileColors();
+      showProfilePhotoStatus();
     }
   } catch (e) {
     console.warn("Could not load profile:", e);
@@ -358,47 +311,52 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupProfessionPills();
 });
 
-// ─── Apply skin tone colors to UI ────────────────────────────────────────────
-function applyProfileColors() {
-  const tone = (profileData.skin_tone || "medium").toLowerCase();
-  const colors = SKIN_TONE_COLORS[tone] || SKIN_TONE_COLORS["medium"];
+// ── Show profile photo status banner ─────────────────────
+function showProfilePhotoStatus() {
+  const banner = document.getElementById("profile-photo-status");
+  banner.style.display = "block";
+  if (hasProfilePhoto) {
+    banner.innerHTML   = "✅ Profile photo ready — Virtual Try-On available!";
+    banner.style.color = "green";
+  } else {
+    banner.innerHTML   = '📸 No profile photo yet. ' +
+      '<a href="/profile/" style="color:#b5a48a;font-weight:600;">Upload on Profile page →</a>';
+    banner.style.color = "#b8860b";
+  }
+}
 
-  // Update label
-  const label = document.getElementById("skin-tone-label");
+// ── Apply skin tone colors ────────────────────────────────
+function applyProfileColors() {
+  const tone   = (profileData.skin_tone || "medium").toLowerCase();
+  const colors = SKIN_TONE_COLORS[tone] || SKIN_TONE_COLORS["medium"];
+  const label  = document.getElementById("skin-tone-label");
   const toneDisplay = tone.charAt(0).toUpperCase() + tone.slice(1);
   label.textContent = `Suggested for your ${toneDisplay} skin tone:`;
-
-  // Update the "Based on" subtitle
   document.querySelector("#ai-recommended .card-sub").textContent =
     `Based on ${toneDisplay} skin tone`;
-
-  // Render color tags
   const container = document.getElementById("color-tags");
   container.innerHTML = colors
     .map(c => `<span class="color-tag" onclick="toggleColorTag(this)">${c}</span>`)
     .join("");
 }
 
-// ─── Color mode toggle ────────────────────────────────────────────────────────
+// ── Color mode toggle ─────────────────────────────────────
 function selectColorMode(mode) {
   colorMode = mode;
   document.getElementById("ai-recommended").classList.toggle("active", mode === "ai");
   document.getElementById("custom-color").classList.toggle("active", mode === "custom");
-  document.getElementById("ai-color-section").style.display  = mode === "ai"     ? "" : "none";
+  document.getElementById("ai-color-section").style.display     = mode === "ai"     ? "" : "none";
   document.getElementById("custom-color-section").style.display = mode === "custom" ? "" : "none";
 }
 
-// Allow toggling individual color tags
-function toggleColorTag(el) {
-  el.classList.toggle("selected");
-}
+function toggleColorTag(el) { el.classList.toggle("selected"); }
 
-// ─── Profession pills: single-select ─────────────────────────────────────────
+// ── Profession pills ──────────────────────────────────────
 function setupProfessionPills() {
-  const pills = document.querySelectorAll("#profession-group .pill");
-  pills.forEach(pill => {
+  document.querySelectorAll("#profession-group .pill").forEach(pill => {
     pill.addEventListener("click", () => {
-      pills.forEach(p => p.classList.remove("active"));
+      document.querySelectorAll("#profession-group .pill")
+               .forEach(p => p.classList.remove("active"));
       pill.classList.add("active");
       selectedProfession = pill.dataset.val;
       document.getElementById("profession-hint").textContent =
@@ -407,73 +365,59 @@ function setupProfessionPills() {
   });
 }
 
-// ─── Get selected colors ─────────────────────────────────────────────────────
+// ── Get selected colors ───────────────────────────────────
 function getSelectedColors() {
   if (colorMode === "custom") {
-    const val = document.getElementById("custom-color-input").value.trim();
-    return val || "neutral tones";
+    return document.getElementById("custom-color-input").value.trim() || "neutral tones";
   }
   const selected = [...document.querySelectorAll(".color-tag.selected")]
     .map(el => el.textContent);
   if (selected.length) return selected.join(", ");
-  // fallback: all suggested colors
-  return [...document.querySelectorAll(".color-tag")]
-    .map(el => el.textContent).join(", ");
+  return [...document.querySelectorAll(".color-tag")].map(el => el.textContent).join(", ");
 }
 
-// ─── Generate outfits ────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════
+// GENERATE OUTFITS  (moved to backend — no exposed key!)
+// ════════════════════════════════════════════════════════
 async function generateOutfits() {
   if (!selectedProfession) {
     alert("Please select your profession first.");
     return;
   }
 
-  const occasion   = document.getElementById("occasion").value;
-  const mood       = document.getElementById("mood").value;
-  const colors     = getSelectedColors();
-  const profStyle  = PROFESSION_STYLE[selectedProfession] || "versatile";
-  const skinTone   = (profileData.skin_tone || "medium");
+  const occasion  = document.getElementById("occasion").value;
+  const mood      = document.getElementById("mood").value;
+  const colors    = getSelectedColors();
+  const profStyle = PROFESSION_STYLE[selectedProfession] || "versatile";
+  const skinTone  = profileData.skin_tone || "medium";
 
-  // Show spinner, hide placeholder & grid
+  // Reset UI
   document.getElementById("preview-placeholder").style.display = "none";
-  document.getElementById("spinner").style.display = "block";
-  document.getElementById("outfit-grid").style.display = "none";
-
-  const prompt = `
-You are a professional fashion stylist AI.
-Generate exactly 3 outfit suggestions for:
-- Occasion: ${occasion}
-- Profession: ${selectedProfession} (style: ${profStyle})
-- Mood: ${mood}
-- Skin tone: ${skinTone}
-- Preferred colors: ${colors}
-
-Respond ONLY with a JSON array, no markdown, no extra text:
-[
-  {
-    "name": "Outfit name",
-    "description": "Short description mentioning colors and style",
-    "pieces": ["piece 1", "piece 2", "piece 3"],
-    "colors": ["color1", "color2"]
-  }
-]`;
+  document.getElementById("spinner").style.display             = "block";
+  document.getElementById("outfit-grid").style.display         = "none";
+  document.getElementById("tryon-section").style.display       = "none";
+  document.getElementById("tryon-result").style.display        = "none";
+  currentOutfit = null;
 
   try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    // ✅ Call Django backend instead of Anthropic directly
+    const res = await fetch("/api/generate-outfit-suggestions/", {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken":  getCookie("csrftoken"),
+      },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        messages: [{ role: "user", content: prompt }]
+        occasion, mood, colors, profStyle, skinTone,
+        profession: selectedProfession
       })
     });
 
     const data = await res.json();
-    const raw  = data.content.map(b => b.text || "").join("");
-    const clean = raw.replace(/```json|```/g, "").trim();
-    const outfits = JSON.parse(clean);
-    renderOutfits(outfits, occasion);
+
+    if (data.error) throw new Error(data.error);
+
+    renderOutfits(data.outfits, occasion);
 
   } catch (err) {
     console.error(err);
@@ -485,13 +429,15 @@ Respond ONLY with a JSON array, no markdown, no extra text:
   }
 }
 
-// ─── Render outfit cards ──────────────────────────────────────────────────────
+// ── Render outfit cards ───────────────────────────────────
 function renderOutfits(outfits, occasion) {
   const emoji = OCCASION_EMOJI[occasion] || "👗";
   const grid  = document.getElementById("outfit-grid");
 
-  grid.innerHTML = outfits.map(o => `
-    <div class="outfit-card">
+  grid.innerHTML = outfits.map((o, i) => `
+    <div class="outfit-card" id="outfit-card-${i}"
+         onclick="selectOutfit(${i})"
+         style="cursor:pointer; transition:box-shadow 0.2s;">
       <div class="outfit-img">${emoji}</div>
       <div class="outfit-info">
         <div class="outfit-name">${o.name}</div>
@@ -502,13 +448,119 @@ function renderOutfits(outfits, occasion) {
         <div class="outfit-colors">
           ${o.colors.map(c => `<span class="color-dot" title="${c}"></span>`).join("")}
         </div>
+        <div class="outfit-select-hint"
+             style="margin-top:8px; font-size:12px; color:#aaa;">
+          Click to select for Try-On
+        </div>
       </div>
     </div>
   `).join("");
 
+  // Store all outfits globally
+  window._allOutfits = outfits;
+
   grid.style.display = "grid";
-  showTryOnSection();
+
+  // Auto-select first outfit
+  selectOutfit(0);
 }
+
+// ✅ Select outfit for try-on
+function selectOutfit(index) {
+  const outfits = window._allOutfits || [];
+  if (!outfits[index]) return;
+
+  // Highlight selected card
+  document.querySelectorAll(".outfit-card").forEach((card, i) => {
+    card.style.boxShadow = i === index
+      ? "0 0 0 2px #b5a48a"
+      : "";
+    card.querySelector(".outfit-select-hint").textContent = i === index
+      ? "✅ Selected for Try-On"
+      : "Click to select for Try-On";
+  });
+
+  currentOutfit = outfits[index];
+  document.getElementById("tryon-section").style.display = "block";
+
+  // Reset previous results
+  document.getElementById("tryon-result").style.display  = "none";
+  document.getElementById("tryon-error").style.display   = "none";
+  document.getElementById("tryon-no-photo").style.display = "none";
+}
+
+// ════════════════════════════════════════════════════════
+// VIRTUAL TRY-ON
+// ════════════════════════════════════════════════════════
+async function generateTryOn() {
+  const btn     = document.getElementById("tryon-btn");
+  const spinner = document.getElementById("tryon-spinner");
+  const result  = document.getElementById("tryon-result");
+  const errDiv  = document.getElementById("tryon-error");
+  const noPhoto = document.getElementById("tryon-no-photo");
+
+  // Reset
+  result.style.display  = "none";
+  errDiv.style.display  = "none";
+  noPhoto.style.display = "none";
+
+  if (!currentOutfit) {
+    errDiv.textContent   = "Please select an outfit first.";
+    errDiv.style.display = "block";
+    return;
+  }
+
+  // Loading
+  btn.textContent   = "⏳ Analysing...";
+  btn.disabled      = true;
+  spinner.style.display = "block";
+
+  try {
+    const res = await fetch("/api/generate-tryon/", {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken":  getCookie("csrftoken"),
+      },
+      body: JSON.stringify({
+        outfit_name:        currentOutfit.name,
+        outfit_description: currentOutfit.description,
+        outfit_pieces:      currentOutfit.pieces,
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "success") {
+      document.getElementById("tryon-text").textContent = data.result;
+      document.getElementById("tryon-outfit-label").textContent =
+        `Analysis for: ${data.outfit}`;
+      result.style.display = "block";
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    } else if (data.needs_photo) {
+      noPhoto.style.display = "block";
+
+    } else {
+      errDiv.textContent   = "❌ " + (data.error || "Something went wrong.");
+      errDiv.style.display = "block";
+    }
+
+  } catch (e) {
+    errDiv.textContent   = "❌ Network error. Please try again.";
+    errDiv.style.display = "block";
+  } finally {
+    btn.textContent       = "👗 Generate Try-On";
+    btn.disabled          = false;
+    spinner.style.display = "none";
+  }
+}
+
+function closeTryonResult() {
+  document.getElementById("tryon-result").style.display = "none";
+}
+
 </script>
+
 </body>
 </html>

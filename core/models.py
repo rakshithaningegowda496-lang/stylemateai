@@ -16,6 +16,7 @@ class UserProfile(models.Model):
     body_type = models.CharField(max_length=100)
     skin_type = models.CharField(max_length=100)
     gender = models.CharField(max_length=50)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
 
     def __str__(self):
         return self.full_name

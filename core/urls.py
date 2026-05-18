@@ -15,4 +15,9 @@ urlpatterns = [
     path('api/wardrobe/<int:item_id>/delete/',     views.wardrobe_delete_api,   name='wardrobe_delete'),
     path('recommend/',                             views.recommend_outfits_api, name='recommend'),
     path('generate-outfit/',                       views.generate_outfit,       name='generate_outfit'),
+# core/urls.py — ADD these 2 lines to urlpatterns:
+
+path('api/generate-tryon/',       views.generate_tryon_api,       name='generate_tryon'),
+path('api/upload-profile-image/', views.upload_profile_image_api, name='upload_profile_image'),
+path('api/generate-outfit-suggestions/', views.generate_outfit_suggestions, name='generate_outfit_suggestions'),
 ]
