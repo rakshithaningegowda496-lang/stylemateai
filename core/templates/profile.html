@@ -61,19 +61,22 @@
 
         <!-- IMAGE UPLOAD -->
         <div class="upload-grid">
-          <label class="dropbox clickable" for="cameraInput">
-            <div class="drop-icon">📹</div>
-            <div class="drop-title">CAMERA</div>
-            <input type="file" accept="image/*" capture="user" id="cameraInput" hidden>
-          </label>
+  <label class="dropbox clickable" for="cameraInput">
+    <div class="drop-icon">📹</div>
+    <div class="drop-title">CAMERA</div>
+    <!-- ✅ ADD name="profile_image" -->
+    <input type="file" accept="image/*" capture="user" 
+           id="cameraInput" name="profile_image" hidden>
+  </label>
 
-          <label class="dropbox clickable" for="uploadInput">
-            <div class="drop-icon">📷</div>
-            <div class="drop-title">UPLOAD</div>
-            <input type="file" accept="image/*" id="uploadInput" hidden>
-          </label>
-        </div>
-
+  <label class="dropbox clickable" for="uploadInput">
+    <div class="drop-icon">📷</div>
+    <div class="drop-title">UPLOAD</div>
+    <!-- ✅ ADD name="profile_image" -->
+    <input type="file" accept="image/*" 
+           id="uploadInput" name="profile_image" hidden>
+  </label>
+</div>
         <!-- IMAGE PREVIEW -->
         <div class="preview-wrapper hidden" id="previewWrapper">
           <img id="previewImage" class="preview-image" src="" alt="Preview">
