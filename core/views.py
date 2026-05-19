@@ -7,6 +7,7 @@ from .models import WardrobeItem
 from .models import UserProfile
 from django.conf import settings
 from groq import Groq
+import os
 
 # When creating the client in your views, use:
 
@@ -309,6 +310,7 @@ def upload_profile_image_api(request):
 
 
 @csrf_exempt
+@csrf_exempt
 def generate_outfit_suggestions(request):
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
@@ -382,9 +384,125 @@ Remember: Return ONLY the JSON, nothing else."""
         raw = raw.strip()
 
         data = json.loads(raw)
+
+        # ✅ Match each outfit's pieces to real wardrobe images
+        wardrobe_list = list(WardrobeItem.objects.exclude(image='').values(
+            'name', 'category', 'color_name', 'image'
+        ))
+
+        print("WARDROBE LIST:", wardrobe_list)  # debug
+
+        for outfit in data.get("outfits", []):
+            outfit["item_images"] = []
+            for piece in outfit.get("pieces", []):
+                piece_lower = piece.lower()
+                best_match = None
+                for item in wardrobe_list:
+                    item_name     = item["name"].lower()
+                    item_category = item["category"].lower()
+                    # Match if any word in item name appears in piece or vice versa
+                    if (item_name in piece_lower or
+                        piece_lower in item_name or
+                        item_category in piece_lower or
+                        any(word in piece_lower for word in item_name.split())):
+                        best_match = item
+                        break
+                if best_match:
+                    image_url = settings.MEDIA_URL + best_match["image"]
+                    outfit["item_images"].append(image_url)
+                    print(f"  ✅ Matched '{piece}' → {best_match['name']} → {image_url}")
+                else:
+                    print(f"  ❌ No match for piece: '{piece}'")
+
         return JsonResponse(data)
 
     except json.JSONDecodeError as e:
         return JsonResponse({"error": f"JSON parse error: {str(e)}"}, status=500)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+
+@csrf_exempt
+def generate_tryon_ai(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    try:
+        import requests as http_requests
+        import base64
+
+        body = json.loads(request.body)
+        outfit_image_url    = body.get("outfit_image_url", "")
+        outfit_description  = body.get("outfit_description", "")
+
+        profile = UserProfile.objects.last()
+        if not profile or not profile.profile_image:
+            return JsonResponse({"status": "error", "needs_photo": True})
+
+        # Read profile image as base64
+        profile_image_path = profile.profile_image.path
+        with open(profile_image_path, "rb") as f:
+            human_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+        # Read garment image as base64
+        # outfit_image_url is like /media/wardrobe/tops/user_1/abc.jpg
+        garment_image_path = os.path.join(
+            settings.MEDIA_ROOT,
+            outfit_image_url.lstrip("/").replace("media/", "", 1)
+        )
+        with open(garment_image_path, "rb") as f:
+            garment_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+        print("👤 Human image path:", profile_image_path)
+        print("👗 Garment image path:", garment_image_path)
+
+        # Call Hugging Face IDM-VTON Space API
+       # Call Hugging Face IDM-VTON Space API
+       # Try Gradio client approach
+        hf_token = settings.HUGGINGFACE_API_TOKEN
+        api_url = "https://nymbo-virtual-try-on.hf.space/run/predict"
+
+        response = http_requests.post(
+            api_url,
+            headers={
+                "Authorization": f"Bearer {hf_token}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "fn_index": 0,
+                "data": [
+                    f"data:image/jpeg;base64,{human_b64}",
+                    f"data:image/jpeg;base64,{garment_b64}",
+                    outfit_description,
+                    True,
+                    True,
+                    30,
+                    42,
+                ],
+            },
+            timeout=180,
+        )
+
+        print("HF status:", response.status_code)
+        print("HF response:", response.text[:500])
+
+        if response.status_code == 200:
+            result = response.json()
+            output_data = result.get("data", [])
+            if output_data and isinstance(output_data[0], str):
+                return JsonResponse({
+                    "status": "success",
+                    "tryon_image_url": output_data[0],
+                })
+            else:
+                return JsonResponse({
+                    "status": "error",
+                    "error": f"Unexpected response: {str(output_data)[:200]}"
+                }, status=500)
+        else:
+            return JsonResponse({
+                "status": "error",
+                "error": f"HF API error {response.status_code}: {response.text[:300]}"
+            }, status=500)
+    except Exception as e:
+        print("❌ HF error:", str(e))
+        return JsonResponse({"status": "error", "error": str(e)}, status=500)

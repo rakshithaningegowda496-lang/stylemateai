@@ -20,4 +20,5 @@ urlpatterns = [
     path("api/generate-tryon/",             views.generate_tryon_api,         name="generate_tryon_api"),
     path('api/upload-profile-image/',        views.upload_profile_image_api,       name='upload_profile_image'),
     path("api/generate-outfit-suggestions/", views.generate_outfit_suggestions, name="generate_outfit_suggestions"),
+     path("api/generate-tryon-ai/", views.generate_tryon_ai, name="generate_tryon_ai"),
 ]

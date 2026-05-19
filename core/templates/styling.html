@@ -176,72 +176,85 @@
     <!-- Outfit Grid -->
     <div class="outfit-grid" id="outfit-grid" style="display:none;"></div>
 
-    <!-- ── TRY-ON SECTION ── -->
-    <div id="tryon-section" style="display:none; margin-top:24px;">
+   <div id="tryon-section" style="display:none; margin-top:24px;">
 
-      <hr style="border:none; border-top:1px solid #e8e0d5; margin:20px 0;">
+  <hr style="border:none; border-top:1px solid #e8e0d5; margin:20px 0;">
 
-      <h2 style="font-size:18px; font-weight:600; margin-bottom:6px;">
-        Virtual Try-On
-      </h2>
-      <p style="font-size:13px; color:#888; margin-bottom:16px;">
-        Click below — your profile photo will be used automatically.
+  <h2 style="font-size:18px; font-weight:600; margin-bottom:6px;">
+    Virtual Try-On
+  </h2>
+  <p style="font-size:13px; color:#888; margin-bottom:16px;">
+    Click below — your profile photo will be used automatically.
+  </p>
+
+  <!-- Try-On Button -->
+  <button class="generate-btn" id="tryon-btn" onclick="generateTryOn()">
+    👗 Generate Try-On
+  </button>
+
+  <!-- No-photo warning (shown if no profile image) -->
+  <div id="tryon-no-photo"
+       style="display:none; margin-top:12px; padding:12px 14px;
+              background:#fef9f0; border:1px solid #f0d9a8;
+              border-radius:8px; font-size:13px; color:#b8860b;">
+    📸 You haven't uploaded a profile photo yet.
+    <a href="{% url 'profile' %}" style="color:#b5a48a; font-weight:600;">
+      Go to Profile page →
+    </a>
+    to upload your photo, then come back here.
+  </div>
+
+  <!-- Spinner for try-on -->
+  <div id="tryon-spinner"
+       style="display:none; text-align:center; padding:20px; color:#888; font-size:14px;">
+    <div class="spinner"></div>
+    <p style="margin-top:10px;">Claude is analysing your style... ✨</p>
+  </div>
+
+  <!-- Try-On Result -->
+  <div id="tryon-result" style="display:none; margin-top:24px;">
+    <h3 style="font-size:16px; font-weight:600; margin-bottom:4px;">
+      ✨ Your Style Analysis
+    </h3>
+    <p id="tryon-outfit-label"
+       style="font-size:12px; color:#aaa; margin-bottom:12px;"></p>
+
+    <!-- ✅ CANVAS: Visual outfit overlay on user photo -->
+    <div id="tryon-canvas-container" style="display:none; margin-bottom:20px; text-align:center;">
+      <canvas id="tryon-canvas"
+              style="max-width:100%; border-radius:12px;
+                     border:1px solid #e8e0d5;
+                     box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+      </canvas>
+      <p style="font-size:12px; color:#aaa; margin-top:8px;">
+        👆 Virtual try-on preview
       </p>
-
-      <!-- Try-On Button -->
-      <button class="generate-btn" id="tryon-btn" onclick="generateTryOn()">
-        👗 Generate Try-On
-      </button>
-
-      <!-- No-photo warning (shown if no profile image) -->
-      <div id="tryon-no-photo"
-           style="display:none; margin-top:12px; padding:12px 14px;
-                  background:#fef9f0; border:1px solid #f0d9a8;
-                  border-radius:8px; font-size:13px; color:#b8860b;">
-        📸 You haven't uploaded a profile photo yet.
-        <a href="{% url 'profile' %}" style="color:#b5a48a; font-weight:600;">
-          Go to Profile page →
-        </a>
-        to upload your photo, then come back here.
-      </div>
-
-      <!-- Spinner for try-on -->
-      <div id="tryon-spinner"
-           style="display:none; text-align:center; padding:20px; color:#888; font-size:14px;">
-        <div class="spinner"></div>
-        <p style="margin-top:10px;">Claude is analysing your style... ✨</p>
-      </div>
-
-      <!-- Try-On Result -->
-      <div id="tryon-result" style="display:none; margin-top:24px;">
-        <h3 style="font-size:16px; font-weight:600; margin-bottom:4px;">
-          ✨ Your Style Analysis
-        </h3>
-        <p id="tryon-outfit-label"
-           style="font-size:12px; color:#aaa; margin-bottom:12px;"></p>
-        <div id="tryon-text"
-             style="background:#faf9f7; border-radius:12px; padding:18px;
-                    font-size:14px; line-height:1.8; color:#333;
-                    white-space:pre-wrap; border:1px solid #e8e0d5;">
-        </div>
-        <button onclick="closeTryonResult()"
-                style="margin-top:12px; padding:8px 18px; background:transparent;
-                       border:1px solid #ccc; border-radius:8px; cursor:pointer;
-                       font-size:13px; color:#666;">
-          ✕ Close
-        </button>
-      </div>
-
-      <!-- Error -->
-      <div id="tryon-error"
-           style="display:none; margin-top:12px; padding:12px 14px;
-                  background:#fdf0f0; border-radius:8px;
-                  font-size:13px; color:#c0392b;">
-      </div>
-
     </div>
-    <!-- end #tryon-section -->
 
+    <!-- Text analysis (kept below canvas) -->
+    <div id="tryon-text"
+         style="background:#faf9f7; border-radius:12px; padding:18px;
+                font-size:14px; line-height:1.8; color:#333;
+                white-space:pre-wrap; border:1px solid #e8e0d5;">
+    </div>
+
+    <button onclick="closeTryonResult()"
+            style="margin-top:12px; padding:8px 18px; background:transparent;
+                   border:1px solid #ccc; border-radius:8px; cursor:pointer;
+                   font-size:13px; color:#666;">
+      ✕ Close
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div id="tryon-error"
+       style="display:none; margin-top:12px; padding:12px 14px;
+              background:#fdf0f0; border-radius:8px;
+              font-size:13px; color:#c0392b;">
+  </div>
+
+</div>
+<!-- end #tryon-section -->
   </div>
   <!-- end .preview-panel -->
 
@@ -506,16 +519,18 @@ function selectOutfit(index) {
 // VIRTUAL TRY-ON
 // ════════════════════════════════════════════════════════
 async function generateTryOn() {
-  const btn     = document.getElementById("tryon-btn");
-  const spinner = document.getElementById("tryon-spinner");
-  const result  = document.getElementById("tryon-result");
-  const errDiv  = document.getElementById("tryon-error");
-  const noPhoto = document.getElementById("tryon-no-photo");
+  const btn      = document.getElementById("tryon-btn");
+  const spinner  = document.getElementById("tryon-spinner");
+  const result   = document.getElementById("tryon-result");
+  const errDiv   = document.getElementById("tryon-error");
+  const noPhoto  = document.getElementById("tryon-no-photo");
+  const container = document.getElementById("tryon-canvas-container");
 
   // Reset
-  result.style.display  = "none";
-  errDiv.style.display  = "none";
-  noPhoto.style.display = "none";
+  result.style.display    = "none";
+  errDiv.style.display    = "none";
+  noPhoto.style.display   = "none";
+  container.style.display = "none";
 
   if (!currentOutfit) {
     errDiv.textContent   = "Please select an outfit first.";
@@ -523,13 +538,62 @@ async function generateTryOn() {
     return;
   }
 
+  // Pick first matched wardrobe image
+  const outfitImageUrl = (currentOutfit.item_images && currentOutfit.item_images[0]) || null;
+
+  if (!outfitImageUrl) {
+    errDiv.textContent   = "❌ No wardrobe image matched for this outfit. Please add items to your wardrobe.";
+    errDiv.style.display = "block";
+    return;
+  }
+
   // Loading
-  btn.textContent   = "⏳ Analysing...";
-  btn.disabled      = true;
+  btn.textContent       = "⏳ Generating... (~30s)";
+  btn.disabled          = true;
   spinner.style.display = "block";
 
   try {
-    const res = await fetch("/api/generate-tryon/", {
+    // Step 1 — Call Replicate AI try-on
+    const aiRes = await fetch("/api/generate-tryon-ai/", {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken":  getCookie("csrftoken"),
+      },
+      body: JSON.stringify({
+        outfit_image_url:   outfitImageUrl,
+        outfit_description: currentOutfit.description,
+        outfit_name:        currentOutfit.name,
+      })
+    });
+
+    const aiData = await aiRes.json();
+
+    if (aiData.status === "success" && aiData.tryon_image_url) {
+      // Show the AI-generated try-on image
+      const canvas = document.getElementById("tryon-canvas");
+      const ctx    = canvas.getContext("2d");
+
+      const resultImg = new Image();
+      resultImg.crossOrigin = "anonymous";
+      resultImg.src = aiData.tryon_image_url;
+
+      resultImg.onload = function () {
+        canvas.width  = resultImg.naturalWidth;
+        canvas.height = resultImg.naturalHeight;
+        ctx.drawImage(resultImg, 0, 0);
+        container.style.display = "block";
+      };
+
+    } else if (aiData.needs_photo) {
+      noPhoto.style.display = "block";
+    } else {
+      errDiv.textContent   = "❌ " + (aiData.error || "AI try-on failed.");
+      errDiv.style.display = "block";
+    }
+
+    // Step 2 — Also call Groq for text analysis (keep this too)
+    const textRes = await fetch("/api/generate-tryon/", {
       method:  "POST",
       headers: {
         "Content-Type": "application/json",
@@ -542,22 +606,15 @@ async function generateTryOn() {
       })
     });
 
-    const data = await res.json();
-
-    if (data.status === "success") {
-      document.getElementById("tryon-text").textContent = data.result;
+    const textData = await textRes.json();
+    if (textData.status === "success") {
+      document.getElementById("tryon-text").textContent = textData.result;
       document.getElementById("tryon-outfit-label").textContent =
-        `Analysis for: ${data.outfit}`;
-      result.style.display = "block";
-      result.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    } else if (data.needs_photo) {
-      noPhoto.style.display = "block";
-
-    } else {
-      errDiv.textContent   = "❌ " + (data.error || "Something went wrong.");
-      errDiv.style.display = "block";
+        `Analysis for: ${textData.outfit}`;
     }
+
+    result.style.display = "block";
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
 
   } catch (e) {
     errDiv.textContent   = "❌ Network error. Please try again.";
@@ -572,7 +629,119 @@ async function generateTryOn() {
 function closeTryonResult() {
   document.getElementById("tryon-result").style.display = "none";
 }
+function drawTryOnCanvas() {
+  const container = document.getElementById("tryon-canvas-container");
+  const canvas    = document.getElementById("tryon-canvas");
+  const ctx       = canvas.getContext("2d");
 
+  const profileImg = document.querySelector("img[src*='profile']");
+  if (!profileImg) { container.style.display = "none"; return; }
+
+  const itemImages = (currentOutfit && currentOutfit.item_images) || [];
+
+  const userImg = new Image();
+  userImg.crossOrigin = "anonymous";
+  userImg.src = profileImg.src;
+
+  userImg.onload = function () {
+    canvas.width  = userImg.naturalWidth  || 400;
+    canvas.height = userImg.naturalHeight || 500;
+
+    // 1. Draw user photo
+    ctx.drawImage(userImg, 0, 0, canvas.width, canvas.height);
+
+    if (itemImages.length === 0) {
+      // No wardrobe matches — just show photo with label
+      drawOutfitLabel(ctx, canvas);
+      container.style.display = "block";
+      return;
+    }
+
+    // 2. Draw wardrobe item images overlaid on body
+    // Positions: top item on chest area, second on lower body
+    const positions = [
+      { x: canvas.width*0.10, y: canvas.height*0.25, w: canvas.width*0.80, h: canvas.height*0.32 }, // top
+      { x: canvas.width*0.15, y: canvas.height*0.55, w: canvas.width*0.70, h: canvas.height*0.32 }, // bottom
+      { x: canvas.width*0.25, y: canvas.height*0.78, w: canvas.width*0.50, h: canvas.height*0.18 }, // shoes
+    ];
+
+    let loaded = 0;
+    const total = Math.min(itemImages.length, positions.length);
+
+    itemImages.slice(0, total).forEach((src, i) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = src;
+
+      img.onload = function () {
+        const p = positions[i];
+        ctx.save();
+        ctx.globalAlpha = 0.82;
+        // Clip to rounded rectangle so it looks clean
+        ctx.beginPath();
+        ctx.roundRect(p.x, p.y, p.w, p.h, 10);
+        ctx.clip();
+        ctx.drawImage(img, p.x, p.y, p.w, p.h);
+        ctx.restore();
+
+        loaded++;
+        if (loaded === total) {
+          // All images drawn — add label on top
+          drawOutfitLabel(ctx, canvas);
+          container.style.display = "block";
+        }
+      };
+
+      img.onerror = function () {
+        loaded++;
+        if (loaded === total) {
+          drawOutfitLabel(ctx, canvas);
+          container.style.display = "block";
+        }
+      };
+    });
+  };
+
+  userImg.onerror = function () {
+    container.style.display = "none";
+  };
+}
+
+function drawOutfitLabel(ctx, canvas) {
+  const text = `👗 ${currentOutfit.name}`;
+  const bx = canvas.width * 0.10;
+  const by = canvas.height - 52;
+  const bw = canvas.width * 0.80;
+  ctx.save();
+  ctx.globalAlpha = 0.78;
+  ctx.fillStyle   = "rgba(0,0,0,0.55)";
+  ctx.beginPath();
+  ctx.roundRect(bx, by, bw, 38, 8);
+  ctx.fill();
+  ctx.globalAlpha  = 1;
+  ctx.fillStyle    = "#fff";
+  ctx.font         = `bold ${Math.round(canvas.width * 0.042)}px DM Sans, sans-serif`;
+  ctx.textAlign    = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, canvas.width / 2, by + 19);
+  ctx.restore();
+}
+// Maps color name → hex for canvas fill
+function getColorHex(colorName) {
+  const map = {
+    "Soft Pink":"#f4a7b9","Lavender":"#b57bee","Powder Blue":"#add8e6",
+    "Mint":"#98ff98","Champagne":"#f7e7ce","Peach":"#ffcba4",
+    "Blush":"#ff6f91","Sky Blue":"#87ceeb","Sage":"#bcb88a",
+    "Ivory":"#fffff0","Earth Tones":"#8b6914","Olive":"#808000",
+    "Gold":"#ffd700","Mustard":"#ffdb58","Navy":"#000080",
+    "Terracotta":"#e2725b","Burnt Orange":"#cc5500","Coral":"#ff7f50",
+    "Teal":"#008080","Warm Brown":"#a0522d","Jewel Tones":"#800080",
+    "Emerald":"#50c878","Cobalt":"#0047ab","Plum":"#8e4585",
+    "Rich Red":"#c0392b","Bright White":"#ffffff","Electric Blue":"#7df9ff",
+    "Fuchsia":"#ff00ff","Orange":"#ffa500",
+  };
+  return map[colorName] || "#b5a48a";
+}
 </script>
 
 </body>
