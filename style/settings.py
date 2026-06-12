@@ -125,4 +125,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 GROQ_API_KEY = ''
-HUGGINGFACE_API_TOKEN = ""
+SEGMIND_API_KEY = ""

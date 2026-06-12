@@ -8,6 +8,7 @@ from .models import UserProfile
 from django.conf import settings
 from groq import Groq
 import os
+import requests
 
 # When creating the client in your views, use:
 
@@ -309,7 +310,7 @@ def upload_profile_image_api(request):
 
 
 
-@csrf_exempt
+
 @csrf_exempt
 def generate_outfit_suggestions(request):
     if request.method != "POST":
@@ -421,88 +422,53 @@ Remember: Return ONLY the JSON, nothing else."""
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-
 @csrf_exempt
 def generate_tryon_ai(request):
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
     try:
-        import requests as http_requests
-        import base64
-
         body = json.loads(request.body)
-        outfit_image_url    = body.get("outfit_image_url", "")
-        outfit_description  = body.get("outfit_description", "")
+        outfit_image_url = body.get("outfit_image_url", "")
 
         profile = UserProfile.objects.last()
         if not profile or not profile.profile_image:
             return JsonResponse({"status": "error", "needs_photo": True})
 
-        # Read profile image as base64
-        profile_image_path = profile.profile_image.path
-        with open(profile_image_path, "rb") as f:
-            human_b64 = base64.b64encode(f.read()).decode("utf-8")
-
-        # Read garment image as base64
-        # outfit_image_url is like /media/wardrobe/tops/user_1/abc.jpg
-        garment_image_path = os.path.join(
+        person_path  = profile.profile_image.path
+        garment_path = os.path.join(
             settings.MEDIA_ROOT,
             outfit_image_url.lstrip("/").replace("media/", "", 1)
         )
-        with open(garment_image_path, "rb") as f:
-            garment_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-        print("👤 Human image path:", profile_image_path)
-        print("👗 Garment image path:", garment_image_path)
+        print("👤 Person:", person_path)
+        print("👗 Garment:", garment_path)
 
-        # Call Hugging Face IDM-VTON Space API
-       # Call Hugging Face IDM-VTON Space API
-       # Try Gradio client approach
-        hf_token = settings.HUGGINGFACE_API_TOKEN
-        api_url = "https://nymbo-virtual-try-on.hf.space/run/predict"
+        # Run mediapipe using Python 3.11
+        import subprocess, json as json_lib
+        py311 = r"C:\Users\hp\AppData\Local\Programs\Python\Python311\python.exe"
+        script = os.path.join(settings.BASE_DIR, "core", "tryon_mediapipe.py")
 
-        response = http_requests.post(
-            api_url,
-            headers={
-                "Authorization": f"Bearer {hf_token}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "fn_index": 0,
-                "data": [
-                    f"data:image/jpeg;base64,{human_b64}",
-                    f"data:image/jpeg;base64,{garment_b64}",
-                    outfit_description,
-                    True,
-                    True,
-                    30,
-                    42,
-                ],
-            },
-            timeout=180,
+        result = subprocess.run(
+            [py311, script, person_path, garment_path],
+            capture_output=True,
+            text=True,
+            timeout=180
         )
 
-        print("HF status:", response.status_code)
-        print("HF response:", response.text[:500])
+        print("STDOUT:", result.stdout[:500])
+        print("STDERR:", result.stderr[:1000])
 
-        if response.status_code == 200:
-            result = response.json()
-            output_data = result.get("data", [])
-            if output_data and isinstance(output_data[0], str):
-                return JsonResponse({
-                    "status": "success",
-                    "tryon_image_url": output_data[0],
-                })
-            else:
-                return JsonResponse({
-                    "status": "error",
-                    "error": f"Unexpected response: {str(output_data)[:200]}"
-                }, status=500)
+        if result.returncode == 0 and result.stdout.strip():
+            return JsonResponse({
+                "status": "success",
+                "tryon_image_url": result.stdout.strip(),
+            })
         else:
             return JsonResponse({
                 "status": "error",
-                "error": f"HF API error {response.status_code}: {response.text[:300]}"
+                "error": "Pose detection failed. Use a clear full-body photo."
             }, status=500)
+
     except Exception as e:
-        print("❌ HF error:", str(e))
+        print("❌ Error:", str(e))
         return JsonResponse({"status": "error", "error": str(e)}, status=500)

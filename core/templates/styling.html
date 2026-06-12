@@ -539,8 +539,8 @@ async function generateTryOn() {
   }
 
   // Pick first matched wardrobe image
-  const outfitImageUrl = (currentOutfit.item_images && currentOutfit.item_images[0]) || null;
-
+const outfitImageUrl = (currentOutfit.item_images && currentOutfit.item_images[0]) || null;
+const outfitImageUrl2 = (currentOutfit.item_images && currentOutfit.item_images[1]) || null;
   if (!outfitImageUrl) {
     errDiv.textContent   = "❌ No wardrobe image matched for this outfit. Please add items to your wardrobe.";
     errDiv.style.display = "block";
